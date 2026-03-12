@@ -1,0 +1,601 @@
+---
+import '../styles/global.css';
+
+const currentYear = new Date().getFullYear();
+const legalLinks = {
+  trademarks: 'https://www.kudos.com/trademarks',
+  terms: 'https://www.kudos.com/terms-of-service',
+  privacy: 'https://www.kudos.com/privacy-policy',
+  cookies: 'https://www.kudos.com/privacy-policy',
+  status: 'https://status.kudos.com/',
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Next Generation of Employee Rewards</title>
+    <meta
+      name="description"
+      content="Kudos® is the recognition and rewards platform designed to fit your unique workplace culture."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Vollkorn:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+  </head>
+  <body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo" aria-label="Kudos home">
+        <img src="/images/kudos-logo.svg" alt="Kudos">
+      </a>
+      <div class="nav-actions">
+        <a href="https://support.kudosnow.com/hc/en-us" class="nav-support">Support</a>
+        <a href="https://give.kudosnow.com/" class="nav-login">Existing Client Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-label">Employee Rewards &amp; Recognition Software</p>
+        <h1 class="hero-title">The Next Generation of Employee Rewards</h1>
+        <p
+          class="hero-subtitle"
+          id="hero-subtitle"
+          data-default-text="Kudos® is the rewards and recognition platform designed to fit your unique workplace culture."
+          data-ca-text="Kudos® is the rewards and recognition platform designed to fit your unique workplace culture. Proudly Canadian 🇨🇦"
+        >
+          Kudos® is the rewards and recognition platform designed to fit your unique workplace culture.
+        </p>
+        <p class="hero-list-label">With Kudos you'll:</p>
+        <ul class="hero-list">
+          <li>Increase employee engagement</li>
+          <li>Reduce turnover</li>
+          <li>Save time and money</li>
+          <li>Improve productivity</li>
+        </ul>
+        <div class="hero-secondary-actions">
+          <p class="hero-pricing-note">Looking for pricing for your organization? <a href="https://kudos.com/request-pricing">Get pricing here</a></p>
+        </div>
+        <div class="hero-locale-badge" id="hero-locale-badge-wrap">
+          <img
+            src="/images/leader-mm.svg"
+            alt="Leader Momentum Matrix badge"
+            loading="lazy"
+          />
+          <img
+            id="hero-locale-badge"
+            src="/images/best-usability.svg"
+            data-default-src="/images/best-usability.svg"
+            data-ca-src="/images/top-50-cad.svg"
+            data-default-alt="Best Usability badge"
+            data-ca-alt="Top 50 Canada badge"
+            alt="Best Usability badge"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="form-card" id="top-form">
+        <h2 class="form-card-title">Schedule a 30-minute call</h2>
+        <div class="hubspot-form hubspot-form-hero">
+          <div class="hs-form-frame" data-region="na1" data-form-id="752783ec-f67e-493a-8251-642812d70938" data-portal-id="21201461"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logo Strip -->
+  <section class="logos-section">
+    <div class="container">
+      <h2
+        class="logos-section-title"
+        id="logos-section-title"
+        data-default-text="Trusted by the Best Workplaces"
+        data-ca-text="Trusted by the Best Canadian Workplaces"
+      >
+        Trusted by the Best Workplaces
+      </h2>
+      <div class="logos-row">
+        <div class="logo-item">
+          <img
+            id="logos-first-logo"
+            src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/667c825be86384aaf5f707e2_MTN-Logo-Greyscale-2.webp"
+            data-default-src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/667c825be86384aaf5f707e2_MTN-Logo-Greyscale-2.webp"
+            data-ca-src="/images/logo-fortisbc.svg"
+            data-default-alt="MTN"
+            data-ca-alt="FortisBC"
+            alt="MTN"
+          >
+        </div>
+        <div class="logo-item">
+          <img
+            id="logos-second-logo"
+            src="/images/logo-engie.svg"
+            data-default-src="/images/logo-engie.svg"
+            data-ca-src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/689397f94346704a68646145_Danby-Logo.svg"
+            data-default-alt="ENGIE"
+            data-ca-alt="Danby"
+            alt="ENGIE"
+          >
+        </div>
+        <div class="logo-item"><img src="/images/logo-dhl.svg" alt="DHL"></div>
+        <div class="logo-item">
+          <img
+            id="logos-middle-logo"
+            src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/67eeb2364d12c25d64a8ff85_Vanderbilt-University-Greyscale.webp"
+            data-default-src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/67eeb2364d12c25d64a8ff85_Vanderbilt-University-Greyscale.webp"
+            data-ca-src="/images/logo-dll-canada.png"
+            data-default-alt="Vanderbilt University"
+            data-ca-alt="DLL Canada"
+            alt="Vanderbilt University"
+          >
+        </div>
+        <div class="logo-item">
+          <img
+            id="logos-second-last-logo"
+            src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/673e4f388eafc72a5148f239_Cummins-Logo.webp"
+            data-default-src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/673e4f388eafc72a5148f239_Cummins-Logo.webp"
+            data-ca-src="/images/logo-western.svg"
+            data-default-alt="Cummins"
+            data-ca-alt="Western Financial Group"
+            alt="Cummins"
+          >
+        </div>
+        <div class="logo-item">
+          <img
+            id="logos-last-logo"
+            src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/667c7fa98ef6936a269c3e9b_MU-HealthCare-15047-Greyscale.webp"
+            data-default-src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/667c7fa98ef6936a269c3e9b_MU-HealthCare-15047-Greyscale.webp"
+            data-ca-src="https://cdn.prod.website-files.com/61832088cc97eb577fc81c35/689397a9c576cf924c6aea60_Calgary-Public-Library-Logo.svg"
+            data-default-alt="MU Health Care"
+            data-ca-alt="Calgary Public Library"
+            alt="MU Health Care"
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Intro -->
+  <section class="features-intro">
+    <div class="container">
+      <h2>Real Rewards, Real Results</h2>
+      <p>Kudos helps organizations worldwide build stronger cultures through the power of employee recognition.</p>
+    </div>
+  </section>
+
+  <!-- By The Numbers -->
+  <section class="metrics-section">
+    <div class="container">
+      <div class="metrics-grid">
+        <article class="metric-card">
+          <p class="metric-value">93%+</p>
+          <p class="metric-label">User participation<span class="metric-asterisk">*</span></p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-value">17.8%</p>
+          <p class="metric-label">Yearly improvement in turnover<span class="metric-asterisk">*</span></p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-value">18.8%</p>
+          <p class="metric-label">Improvement in engagement scores<span class="metric-asterisk">*</span></p>
+        </article>
+      </div>
+      <p class="metrics-footnote">* Results seen from organizations that follow Kudos' recommended best practices.</p>
+    </div>
+  </section>
+
+  <!-- Feature 1: Rewards -->
+  <section class="feature-row feature-row-first">
+    <div class="container">
+      <div class="feature-image">
+        <img src="/images/employee-rewards-man-unboxing-headphones.webp" alt="Employee unboxing headphones as a reward" loading="lazy">
+      </div>
+      <div class="feature-text">
+        <h3>Exciting Employee Rewards</h3>
+        <p>Use rewards to reinforce the behaviors that matter, not just hand out points. With Kudos, you control budgets by team, location, or program so spend stays predictable.</p>
+        <p>Offer meaningful reward options while balancing monetary and non-monetary recognition, and connect rewards directly to values, milestones, and performance moments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 2: Recognition-focused -->
+  <section class="feature-row reverse">
+    <div class="container">
+      <div class="feature-image">
+        <img src="/images/feature-recognition.webp" alt="Kudos recognition card showing a Great Job message" loading="lazy">
+      </div>
+      <div class="feature-text">
+        <h3>Impactful Employee Recognition</h3>
+        <p>Build a recognition program people actually use. Kudos helps you launch peer-to-peer, manager-to-employee, nomination-based, and milestone recognition in one platform tailored to your culture.</p>
+        <p>Tie every recognition moment to company values, keep participation high across teams, and give HR a simple way to run and evolve programs without manual overhead.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 3: Milestones -->
+  <section class="feature-row">
+    <div class="container">
+      <div class="feature-image">
+        <img src="/images/anniversaries-simplified-mockup.webp" alt="Kudos anniversary milestone mockup" loading="lazy">
+      </div>
+      <div class="feature-text">
+        <h3>Celebrate Employee Milestones</h3>
+        <p>Save time and never miss another employee milestone with Kudos celebrations. Automatically circulate virtual cards and send reward points to employees for work anniversaries, birthdays, and more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations -->
+  <section class="integrations-section">
+    <div class="container">
+      <div class="integrations-content">
+        <p class="section-label">Integrations</p>
+        <h2>Recognition that works where your team already works</h2>
+        <p>Kudos integrates with the everyday tools your people use, helping recognition happen naturally without adding new workflow friction.</p>
+      </div>
+      <div class="integrations-visual" aria-hidden="true">
+        <div class="orbit-system">
+          <div class="orbit-center">
+            <img src="/images/kudos-star.svg" alt="">
+          </div>
+          <div class="orbit-track">
+            <span class="orbit-item orbit-item-1">
+              <span class="orbit-icon"><img class="integration-logo integration-logo-teams" src="/images/teams.svg" alt=""></span>
+            </span>
+            <span class="orbit-item orbit-item-2">
+              <span class="orbit-icon"><img class="integration-logo integration-logo-outlook" src="/images/outlook.svg" alt=""></span>
+            </span>
+            <span class="orbit-item orbit-item-3">
+              <span class="orbit-icon"><img class="integration-logo integration-logo-adp" src="/images/adp-logo.svg" alt=""></span>
+            </span>
+            <span class="orbit-item orbit-item-4">
+              <span class="orbit-icon"><img class="integration-logo integration-logo-ukg" src="/images/ukg.svg" alt=""></span>
+            </span>
+            <span class="orbit-item orbit-item-5">
+              <span class="orbit-icon"><img class="integration-logo integration-logo-slack" src="/images/slack.svg" alt=""></span>
+            </span>
+            <span class="orbit-item orbit-item-6">
+              <span class="orbit-icon"><img class="integration-logo integration-logo-workday" src="/images/workday.svg" alt=""></span>
+            </span>
+            <span class="orbit-item orbit-item-7">
+              <span class="orbit-icon"><img class="integration-logo" src="/images/hibob.svg" alt=""></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2 class="cta-banner-title">Discover the power of Kudos – and why HR leaders <span class="is--vollkorn">love</span> our platform.</h2>
+      <a href="#top-form" class="btn-cta">Book a Call</a>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <h2>What our clients have to say</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">
+            <img src="/images/quotation-marks.svg" alt="">
+          </div>
+          <p class="testimonial-text">Kudos is an easy to implement, highly effective, and all-employee-engaging approach to giving (and receiving) recognition.</p>
+          <p class="testimonial-author">Kenneth C. Euverman</p>
+          <p class="testimonial-role">Chief Financial and Operating Officer,<br>Meals on Wheels America</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">
+            <img src="/images/quotation-marks.svg" alt="">
+          </div>
+          <p class="testimonial-text">It takes effort to build a recognition and rewards program, and to implement it. But it takes so much more effort to compensate for the lack of one. Lack of organizational culture and team members' engagement is a simple cost/benefit analysis, and it is one that will always come down to the same answer: build culture, recognize, and reward your people!</p>
+          <p class="testimonial-author">Marina Fontan</p>
+          <p class="testimonial-role">Human Talent Officer, Kanika Hotels and Resorts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exit Intent Modal -->
+  <div class="exit-intent-modal" id="exit-intent-modal" hidden aria-hidden="true">
+    <div
+      class="exit-intent-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="exit-intent-title"
+      aria-describedby="exit-intent-subtitle"
+      tabindex="-1"
+    >
+      <button type="button" class="exit-intent-close" data-exit-close aria-label="Close modal">&times;</button>
+      <h2 id="exit-intent-title" class="exit-intent-title">Not Ready to Chat Just Yet?</h2>
+      <p id="exit-intent-subtitle" class="exit-intent-subtitle">Check out our demo video of Kudos instead</p>
+      <div class="exit-intent-thumbnail">
+        <a href="https://www.kudos.com/demo/form" class="exit-intent-thumb-link">
+          <img src="/images/demo-thumbnail.webp" alt="Kudos demo video thumbnail">
+        </a>
+      </div>
+      <a href="https://www.kudos.com/demo/form" class="exit-intent-cta">Watch Demo (3:31)</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="logo" style="justify-content: center;">
+        <img src="/images/kudos-logo.svg" alt="Kudos">
+      </div>
+      <p class="footer-copyright">&copy; <span>{currentYear}</span> Copyright Kudos®, Inc.<br>All Rights Reserved.</p>
+    </div>
+    <div class="footer-bottom">
+      <a href={legalLinks.trademarks}>Trademarks</a>
+      <a href={legalLinks.terms}>Terms of Use</a>
+      <a href={legalLinks.privacy}>Privacy Policy</a>
+      <a href={legalLinks.cookies}>Cookie Consent</a>
+      <a href={legalLinks.status}>System Status</a>
+    </div>
+  </footer>
+
+  <script src="https://js.hsforms.net/forms/embed/21201461.js" defer></script>
+  <script>
+    (() => {
+      const collectTrackingParams = () => {
+        const source = new URLSearchParams(window.location.search);
+        const passthrough = new URLSearchParams();
+
+        source.forEach((value, key) => {
+          const lowerKey = key.toLowerCase();
+          const isUtm = lowerKey.startsWith('utm_');
+          const isGoogleClickId = lowerKey === 'gclid' || lowerKey === 'gbraid' || lowerKey === 'wbraid';
+
+          if (isUtm || isGoogleClickId) passthrough.set(key, value);
+        });
+
+        return passthrough;
+      };
+
+      const applyTrackingToOutboundLinks = () => {
+        const trackingParams = collectTrackingParams();
+        const hasTrackingParams = [...trackingParams.keys()].length > 0;
+
+        document.querySelectorAll('a[href]').forEach((link) => {
+          const rawHref = link.getAttribute('href');
+          if (!rawHref) return;
+          if (rawHref.startsWith('#') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:') || rawHref.startsWith('javascript:')) return;
+
+          let url;
+          try {
+            url = new URL(link.href, window.location.href);
+          } catch {
+            return;
+          }
+
+          if (!/^https?:$/.test(url.protocol)) return;
+          if (url.origin === window.location.origin) return;
+
+          link.target = '_blank';
+          const relTokens = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+          relTokens.add('noopener');
+          relTokens.add('noreferrer');
+          link.setAttribute('rel', [...relTokens].join(' '));
+
+          if (!hasTrackingParams) return;
+
+          trackingParams.forEach((value, key) => {
+            if (!url.searchParams.has(key)) {
+              url.searchParams.set(key, value);
+            }
+          });
+
+          link.href = url.toString();
+        });
+      };
+
+      const applyLocaleHeroBadge = () => {
+        const badgeWrap = document.getElementById('hero-locale-badge-wrap');
+        const badge = document.getElementById('hero-locale-badge');
+        const subtitle = document.getElementById('hero-subtitle');
+        const logosTitle = document.getElementById('logos-section-title');
+        const firstLogo = document.getElementById('logos-first-logo');
+        const secondLogo = document.getElementById('logos-second-logo');
+        const middleLogo = document.getElementById('logos-middle-logo');
+        const secondLastLogo = document.getElementById('logos-second-last-logo');
+        const lastLogo = document.getElementById('logos-last-logo');
+        if (!badge || !badgeWrap) return;
+
+        const locale = (new URLSearchParams(window.location.search).get('locale') || '').trim().toUpperCase();
+        const isCanada = locale === 'CA';
+
+        const nextSrc = isCanada ? badge.dataset.caSrc : badge.dataset.defaultSrc;
+        const nextAlt = isCanada ? badge.dataset.caAlt : badge.dataset.defaultAlt;
+
+        if (nextSrc) badge.src = nextSrc;
+        if (nextAlt) badge.alt = nextAlt;
+        badgeWrap.classList.toggle('is-ca', isCanada);
+
+        if (subtitle) {
+          const subtitleText = isCanada ? subtitle.dataset.caText : subtitle.dataset.defaultText;
+          if (subtitleText) subtitle.textContent = subtitleText;
+        }
+
+        if (logosTitle) {
+          const logosTitleText = isCanada ? logosTitle.dataset.caText : logosTitle.dataset.defaultText;
+          if (logosTitleText) logosTitle.textContent = logosTitleText;
+        }
+
+        if (firstLogo) {
+          const firstLogoSrc = isCanada ? firstLogo.dataset.caSrc : firstLogo.dataset.defaultSrc;
+          const firstLogoAlt = isCanada ? firstLogo.dataset.caAlt : firstLogo.dataset.defaultAlt;
+          if (firstLogoSrc) firstLogo.src = firstLogoSrc;
+          if (firstLogoAlt) firstLogo.alt = firstLogoAlt;
+        }
+
+        if (secondLogo) {
+          const secondLogoSrc = isCanada ? secondLogo.dataset.caSrc : secondLogo.dataset.defaultSrc;
+          const secondLogoAlt = isCanada ? secondLogo.dataset.caAlt : secondLogo.dataset.defaultAlt;
+          if (secondLogoSrc) secondLogo.src = secondLogoSrc;
+          if (secondLogoAlt) secondLogo.alt = secondLogoAlt;
+        }
+
+        if (middleLogo) {
+          const middleLogoSrc = isCanada ? middleLogo.dataset.caSrc : middleLogo.dataset.defaultSrc;
+          const middleLogoAlt = isCanada ? middleLogo.dataset.caAlt : middleLogo.dataset.defaultAlt;
+          if (middleLogoSrc) middleLogo.src = middleLogoSrc;
+          if (middleLogoAlt) middleLogo.alt = middleLogoAlt;
+        }
+
+        if (secondLastLogo) {
+          const secondLastLogoSrc = isCanada ? secondLastLogo.dataset.caSrc : secondLastLogo.dataset.defaultSrc;
+          const secondLastLogoAlt = isCanada ? secondLastLogo.dataset.caAlt : secondLastLogo.dataset.defaultAlt;
+          if (secondLastLogoSrc) secondLastLogo.src = secondLastLogoSrc;
+          if (secondLastLogoAlt) secondLastLogo.alt = secondLastLogoAlt;
+        }
+
+        if (lastLogo) {
+          const lastLogoSrc = isCanada ? lastLogo.dataset.caSrc : lastLogo.dataset.defaultSrc;
+          const lastLogoAlt = isCanada ? lastLogo.dataset.caAlt : lastLogo.dataset.defaultAlt;
+          if (lastLogoSrc) lastLogo.src = lastLogoSrc;
+          if (lastLogoAlt) lastLogo.alt = lastLogoAlt;
+        }
+      };
+
+      applyTrackingToOutboundLinks();
+      applyLocaleHeroBadge();
+
+      const modal = document.getElementById('exit-intent-modal');
+      if (!modal) return;
+
+      const dialog = modal.querySelector('.exit-intent-dialog');
+      const closeBtn = modal.querySelector('[data-exit-close]');
+      const storageKey = 'kudos_exit_intent_seen';
+      const transitionMs = 180;
+      const focusableSelector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+      let isVisible = false;
+      let isArmed = false;
+      let previousFocus = null;
+
+      const canUseSessionStorage = () => {
+        try {
+          const testKey = '__kudos_exit_intent_test__';
+          window.sessionStorage.setItem(testKey, '1');
+          window.sessionStorage.removeItem(testKey);
+          return true;
+        } catch {
+          return false;
+        }
+      };
+
+      const hasSessionStorage = canUseSessionStorage();
+
+      const getSeenState = () => {
+        if (!hasSessionStorage) return false;
+        try {
+          return window.sessionStorage.getItem(storageKey) === '1';
+        } catch {
+          return false;
+        }
+      };
+
+      const setSeenState = () => {
+        if (!hasSessionStorage) return;
+        try {
+          window.sessionStorage.setItem(storageKey, '1');
+        } catch {
+          // Ignore storage write failures in private/restricted browsing modes.
+        }
+      };
+
+      const getFocusableElements = () => {
+        if (!dialog) return [];
+        return [...dialog.querySelectorAll(focusableSelector)].filter(
+          (el) => el instanceof HTMLElement && !el.hasAttribute('disabled')
+        );
+      };
+
+      window.setTimeout(() => {
+        isArmed = true;
+      }, 8000);
+
+      const showModal = () => {
+        if (isVisible || getSeenState()) return;
+        isVisible = true;
+        previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        requestAnimationFrame(() => modal.classList.add('is-visible'));
+        setSeenState();
+        const [firstFocusable] = getFocusableElements();
+        (firstFocusable || closeBtn || dialog)?.focus();
+      };
+
+      const hideModal = () => {
+        if (!isVisible) return;
+        isVisible = false;
+        modal.classList.remove('is-visible');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        if (previousFocus) previousFocus.focus();
+        window.setTimeout(() => {
+          modal.hidden = true;
+        }, transitionMs);
+      };
+
+      document.addEventListener('mouseout', (event) => {
+        if (!isArmed) return;
+        if (event.clientY > 0) return;
+        if (event.relatedTarget || event.toElement) return;
+        showModal();
+      }, { passive: true });
+
+      closeBtn?.addEventListener('click', hideModal);
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) hideModal();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!isVisible) return;
+
+        if (event.key === 'Escape') hideModal();
+
+        if (event.key !== 'Tab') return;
+
+        const focusable = getFocusableElements();
+        if (focusable.length === 0) {
+          event.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+          return;
+        }
+
+        if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+    })();
+  </script>
+
+  </body>
+</html>

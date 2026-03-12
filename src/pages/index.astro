@@ -1,0 +1,21 @@
+---
+const redirectTarget = '/employee-recognition';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content={`0;url=${redirectTarget}`} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href={redirectTarget} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <title>Redirecting...</title>
+    <script>
+      window.location.replace('/employee-recognition');
+    </script>
+  </head>
+  <body>
+    <a href={redirectTarget}>Redirecting to {redirectTarget}</a>
+  </body>
+</html>

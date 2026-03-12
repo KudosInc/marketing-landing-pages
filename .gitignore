@@ -1,0 +1,5 @@
+node_modules
+.astro
+dist
+.DS_Store
+paid-landing-pages-backup-20260227-142906.zip
