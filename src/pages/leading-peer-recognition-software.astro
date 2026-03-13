@@ -15,6 +15,13 @@ const legalLinks = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5TVQWJXG');</script>
+    <!-- End Google Tag Manager -->
     <title>Make Every Employee Feel Seen</title>
     <meta
       name="description"
@@ -29,11 +36,15 @@ const legalLinks = {
     <link rel="icon" href="/favicon.png" type="image/png" />
   </head>
   <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5TVQWJXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <!-- Navbar -->
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="logo" aria-label="Kudos home">
+      <a href="https://www.kudos.com" class="logo" aria-label="Kudos home">
         <img src="/images/kudos-logo.svg" alt="Kudos">
       </a>
       <div class="nav-actions">
@@ -523,12 +534,38 @@ const legalLinks = {
       <button type="button" class="exit-intent-close" data-exit-close aria-label="Close modal">&times;</button>
       <h2 id="exit-intent-title" class="exit-intent-title">Not Ready to Chat Just Yet?</h2>
       <p id="exit-intent-subtitle" class="exit-intent-subtitle">Check out our demo video of Kudos instead</p>
-      <div class="exit-intent-thumbnail">
-        <a href="https://www.kudos.com/demo/form" class="exit-intent-thumb-link">
-          <img src="/images/demo-thumbnail.webp" alt="Kudos demo video thumbnail">
-        </a>
+      <div class="exit-intent-content">
+        <div class="exit-intent-media">
+          <button
+            type="button"
+            class="exit-intent-thumbnail-button"
+            data-exit-thumb-trigger
+            aria-describedby="exit-intent-thumb-message"
+          >
+            <div class="exit-intent-thumbnail">
+              <img src="/images/demo-thumbnail.webp" alt="Kudos demo video thumbnail">
+            </div>
+            <div class="exit-intent-thumbnail-meta">
+              <span class="exit-intent-thumbnail-title">Kudos Demo (3:31)</span>
+            </div>
+          </button>
+          <p
+            id="exit-intent-thumb-message"
+            class="exit-intent-thumb-message"
+            data-exit-thumb-message
+            hidden
+            aria-live="polite"
+          >
+            Fill out the form to watch the demo video
+          </p>
+        </div>
+        <div class="exit-intent-form-column">
+          <div class="exit-intent-form hubspot-form">
+            <h3 class="exit-intent-form-heading">Get Instant Access</h3>
+            <div class="hs-form-frame" data-region="na1" data-form-id="b72aaabd-9629-4fc4-9e90-dc35f7cf6d40" data-portal-id="21201461"></div>
+          </div>
+        </div>
       </div>
-      <a href="https://www.kudos.com/demo/form" class="exit-intent-cta">Watch Demo (3:31)</a>
     </div>
   </div>
 
@@ -539,13 +576,6 @@ const legalLinks = {
         <img src="/images/kudos-logo.svg" alt="Kudos">
       </div>
       <p class="footer-copyright">&copy; <span>{currentYear}</span> Copyright Kudos®, Inc.<br>All Rights Reserved.</p>
-    </div>
-    <div class="footer-bottom">
-      <a href={legalLinks.trademarks}>Trademarks</a>
-      <a href={legalLinks.terms}>Terms of Use</a>
-      <a href={legalLinks.privacy}>Privacy Policy</a>
-      <a href={legalLinks.cookies}>Cookie Consent</a>
-      <a href={legalLinks.status}>System Status</a>
     </div>
   </footer>
 
@@ -680,12 +710,17 @@ const legalLinks = {
 
       const dialog = modal.querySelector('.exit-intent-dialog');
       const closeBtn = modal.querySelector('[data-exit-close]');
+      const thumbTrigger = modal.querySelector('[data-exit-thumb-trigger]');
+      const thumbMessage = modal.querySelector('[data-exit-thumb-message]');
       const storageKey = 'kudos_exit_intent_seen';
       const transitionMs = 180;
+      const thumbMessageMs = 2200;
       const focusableSelector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+      const forceModalInDev = import.meta.env.DEV && new URLSearchParams(window.location.search).get('dev') === 'modal';
       let isVisible = false;
       let isArmed = false;
       let previousFocus = null;
+      let thumbMessageTimeout = null;
 
       const canUseSessionStorage = () => {
         try {
@@ -727,10 +762,10 @@ const legalLinks = {
 
       window.setTimeout(() => {
         isArmed = true;
-      }, 8000);
+      }, 5000);
 
       const showModal = () => {
-        if (isVisible || getSeenState()) return;
+        if (isVisible || (!forceModalInDev && getSeenState())) return;
         isVisible = true;
         previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         modal.hidden = false;
@@ -742,6 +777,35 @@ const legalLinks = {
         (firstFocusable || closeBtn || dialog)?.focus();
       };
 
+      const hideThumbMessage = () => {
+        if (!thumbMessage) return;
+        thumbMessage.classList.remove('is-visible');
+        window.setTimeout(() => {
+          if (!thumbMessage.classList.contains('is-visible')) {
+            thumbMessage.hidden = true;
+          }
+        }, transitionMs);
+      };
+
+      const showThumbMessage = () => {
+        if (!thumbMessage) return;
+        if (thumbMessageTimeout) {
+          window.clearTimeout(thumbMessageTimeout);
+          thumbMessageTimeout = null;
+        }
+
+        thumbMessage.hidden = false;
+        requestAnimationFrame(() => thumbMessage.classList.add('is-visible'));
+        thumbMessageTimeout = window.setTimeout(() => {
+          hideThumbMessage();
+          thumbMessageTimeout = null;
+        }, thumbMessageMs);
+      };
+
+      if (forceModalInDev) {
+        window.setTimeout(showModal, 0);
+      }
+
       const hideModal = () => {
         if (!isVisible) return;
         isVisible = false;
@@ -749,6 +813,11 @@ const legalLinks = {
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
         if (previousFocus) previousFocus.focus();
+        if (thumbMessageTimeout) {
+          window.clearTimeout(thumbMessageTimeout);
+          thumbMessageTimeout = null;
+        }
+        hideThumbMessage();
         window.setTimeout(() => {
           modal.hidden = true;
         }, transitionMs);
@@ -762,6 +831,7 @@ const legalLinks = {
       }, { passive: true });
 
       closeBtn?.addEventListener('click', hideModal);
+      thumbTrigger?.addEventListener('click', showThumbMessage);
       modal.addEventListener('click', (event) => {
         if (event.target === modal) hideModal();
       });
