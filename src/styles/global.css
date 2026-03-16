@@ -471,6 +471,16 @@ input, select, button {
   opacity: 1;
 }
 
+@keyframes logos-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-1 * var(--logos-scroll-distance, 0px)), 0, 0);
+  }
+}
+
 /* ===== METRICS SECTION ===== */
 .metrics-section {
   background: #fff;
@@ -1611,5 +1621,35 @@ input, select, button {
 
   .exit-intent-form .hs-form-frame {
     min-height: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-actions {
+    display: none;
+  }
+
+  .logos-section .container {
+    overflow: hidden;
+  }
+
+  .logos-section-title {
+    margin-bottom: 28px;
+  }
+
+  .logos-row {
+    gap: 28px;
+  }
+
+  .logos-row.is-mobile-carousel {
+    width: max-content;
+    justify-content: flex-start;
+    animation: logos-marquee 18s linear infinite;
+    will-change: transform;
+  }
+
+  .logos-row.is-mobile-carousel .logo-item {
+    width: clamp(112px, 32vw, 148px);
+    flex: 0 0 auto;
   }
 }

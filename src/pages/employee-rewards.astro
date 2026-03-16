@@ -503,8 +503,59 @@ const legalLinks = {
         }
       };
 
+      const initMobileLogoCarousel = () => {
+        const logosRow = document.querySelector('.logos-row');
+        if (!logosRow) return;
+
+        const mobileQuery = window.matchMedia('(max-width: 767px)');
+        let frameId = 0;
+
+        const updateCarousel = () => {
+          frameId = 0;
+          const originalItems = [...logosRow.querySelectorAll('.logo-item:not([data-logo-clone="true"])')];
+          const clones = [...logosRow.querySelectorAll('.logo-item[data-logo-clone="true"]')];
+
+          if (!mobileQuery.matches) {
+            clones.forEach((clone) => clone.remove());
+            logosRow.classList.remove('is-mobile-carousel');
+            logosRow.style.removeProperty('--logos-scroll-distance');
+            return;
+          }
+
+          if (clones.length === 0) {
+            originalItems.forEach((item) => {
+              const clone = item.cloneNode(true);
+              clone.dataset.logoClone = 'true';
+              clone.setAttribute('aria-hidden', 'true');
+              clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+              logosRow.appendChild(clone);
+            });
+          }
+
+          const gap = parseFloat(getComputedStyle(logosRow).gap || '0');
+          const scrollDistance = originalItems.reduce((sum, item) => sum + item.getBoundingClientRect().width, 0) + (originalItems.length * gap);
+          logosRow.style.setProperty('--logos-scroll-distance', `${scrollDistance}px`);
+          logosRow.classList.add('is-mobile-carousel');
+        };
+
+        const scheduleUpdate = () => {
+          if (frameId) return;
+          frameId = window.requestAnimationFrame(updateCarousel);
+        };
+
+        mobileQuery.addEventListener?.('change', scheduleUpdate);
+        window.addEventListener('resize', scheduleUpdate, { passive: true });
+        window.addEventListener('load', scheduleUpdate, { once: true });
+        logosRow.querySelectorAll('.logo-item img').forEach((img) => {
+          if (!img.complete) img.addEventListener('load', scheduleUpdate, { once: true });
+        });
+
+        scheduleUpdate();
+      };
+
       applyTrackingToOutboundLinks();
       applyLocaleHeroBadge();
+      initMobileLogoCarousel();
 
       const modal = document.getElementById('exit-intent-modal');
       if (!modal) return;
