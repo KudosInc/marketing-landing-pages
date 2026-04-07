@@ -7,7 +7,10 @@
     "build": "astro build && node scripts/enforce-noindex.mjs",
     "preview": "astro preview"
   },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "dependencies": {
-    "astro": "^5.0.0"
+    "astro": "^6.1.1"
   }
 }
