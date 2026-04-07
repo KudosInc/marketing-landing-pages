@@ -54,11 +54,50 @@ const legalLinks = {
         transition: filter 0.3s, opacity 0.3s;
       }
 
+      .logos-row .logo-item {
+        box-sizing: border-box;
+      }
+
+      .logos-row .logo-item img {
+        width: var(--logo-width, 100%);
+        margin: 0 auto;
+      }
+
       .logos-row .logo-item svg {
-        width: 100%;
+        width: var(--logo-width, 100%);
         height: auto;
         max-height: 48px;
+        margin: 0 auto;
         color: #333;
+      }
+
+      .logos-row .logo-item-mnp {
+        --logo-width: 92%;
+      }
+
+      .logos-row .logo-item-atco {
+        --logo-width: 90%;
+      }
+
+      .logos-row .logo-item-neo {
+        --logo-width: 84%;
+      }
+
+      .logos-row .logo-item-nbc {
+        --logo-width: 88%;
+      }
+
+      .logos-row .logo-item-pcl {
+        --logo-width: 100%;
+        width: 129px;
+      }
+
+      .logos-row .logo-item-pcl img {
+        max-height: 59px;
+      }
+
+      .logos-row .logo-item-jobber {
+        --logo-width: 94%;
       }
 
       .logos-row .logo-item svg path {
@@ -197,22 +236,22 @@ const legalLinks = {
         Members Include
       </h2>
       <div class="logos-row">
-        <div class="logo-item">
+        <div class="logo-item logo-item-mnp">
           <img src="https://cdn.prod.website-files.com/61832088cc97eb7451c81c32/67c0ba6ed6a66d9967b692ab_MNP-Logo-Greyscale.svg" alt="MNP">
         </div>
-        <div class="logo-item">
+        <div class="logo-item logo-item-atco">
           <img src="https://cdn.prod.website-files.com/61832088cc97eb7451c81c32/67c0b963e4a29d8d472a2e59_atco-logo-greyscale.svg" alt="ATCO">
         </div>
-        <div class="logo-item" aria-label="Neo Financial">
+        <div class="logo-item logo-item-neo" aria-label="Neo Financial">
           <svg role="img" aria-label="Neo Financial" fill="none" height="20" viewBox="0 0 66 20" width="66" xmlns="http://www.w3.org/2000/svg" class="fill-black"><g data-testid="logo-path-group"><path d="m54.9843.419091c-8.5745 0-11.0148 5.839089-11.0148 9.790909 0 3.9518 2.4403 9.79 11.0148 9.79 8.5744 0 11.0157-5.8391 11.0157-9.79 0-3.95091-2.4413-9.790909-11.0157-9.790909zm0 18.189109c-3.1688 0-3.2954-3.1746-3.2954-8.3982 0-5.22364.1266-8.39909 3.2954-8.39909 3.1687 0 3.2954 3.17545 3.2954 8.39909 0 5.2236-.1267 8.3982-3.2954 8.3982z"></path><path d="m43.0146 14.8664c-4.4018 2.5991-9.1346.8354-10.6866-4.1709 7.0548-1.18186 10.401-2.43095 10.401-5.06095 0-2.54546-2.3821-5.481823-7.7453-5.196368-7.9773.425454-9.8279 6.304548-9.8279 9.774518 0 6.9737 5.4057 9.7873 9.5284 9.7873 3.4405 0 6.9032-2.0573 8.7593-4.1973zm-8.0309-13.04822c1.2442 0 2.4847 1.06182 2.4847 3.02909 0 2.47909-1.0168 3.85091-5.4233 4.59-.2754-1.99909-.5971-7.61909 2.9386-7.61909z"></path><path d="m10.0174 0c-2.94316 2.26501-6.36687 3.84961-10.0174 4.63636.488992.18182 3.40445 1.11819 3.40445 3.69546v7.33178c0 1.8637-.86336 2.2264-2.416299 2.4937v1.0245h12.097249v-1.0282c-1.553-.2672-2.4154-.63-2.4154-2.4936v-7.33182c0-2.77272.5361-4.68636 2.8581-4.68636 2.2555 0 2.5458 1.95727 2.5458 4.68636v10.85002h9.6485v-1.0246c-1.5529-.2672-2.4163-.63-2.4163-2.4936v-9.22636c0-3.30909-1.5122-6.014549-6.1701-6.014549-2.3341 0-5.1987.979089-7.1177 3.027269z"></path></g></svg>
         </div>
-        <div class="logo-item">
+        <div class="logo-item logo-item-nbc">
           <img src="https://www.nbc.ca/content/dam/bnc/commun/logo/logo-nbc-155x50.svg" alt="National Bank of Canada">
         </div>
-        <div class="logo-item">
+        <div class="logo-item logo-item-pcl">
           <img src="https://www.pcl.com/content/dam/logos/PCL_Const.svg" alt="PCL Construction">
         </div>
-        <div class="logo-item" aria-label="Jobber">
+        <div class="logo-item logo-item-jobber" aria-label="Jobber">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 367.3 65.7" color="#f2f0ea" role="img" aria-label="Jobber">
             <path fill="currentColor" d="M93.7,55.7c-2.9-1.4-5.1-3.4-6.6-5.9-1.5-2.5-2.3-5.3-2.3-8.3l14.7-1.5c.3,1.3.7,2.4,1.4,3.1.6.7,1.6,1.1,2.9,1.1s2.1-.3,2.8-1c.7-.7,1-1.6,1-2.9V8.8h15.2v31.2c0,3.5-.8,6.6-2.3,9.3-1.5,2.7-3.7,4.8-6.6,6.3-2.9,1.5-6.2,2.2-10.1,2.2s-7.2-.7-10.1-2.2Z"></path>
             <path fill="currentColor" d="M141,54.5c-3.8-2.3-6.9-5.3-9.1-9.1-2.2-3.8-3.3-8-3.3-12.5s1.1-8.7,3.3-12.5c2.2-3.8,5.2-6.9,9.1-9.1,3.8-2.2,8.1-3.4,12.8-3.4s8.9,1.1,12.8,3.4,6.9,5.3,9.1,9.1c2.2,3.8,3.3,8,3.3,12.5s-1.1,8.7-3.3,12.5c-2.2,3.8-5.2,6.9-9.1,9.1s-8.1,3.4-12.8,3.4-8.9-1.1-12.8-3.4ZM158.7,42.7c1.5-.9,2.7-2.3,3.6-4,.9-1.7,1.3-3.7,1.3-5.9s-.4-4.2-1.3-5.9c-.9-1.7-2.1-3-3.6-4-1.5-.9-3.2-1.4-5-1.4s-3.5.5-5,1.4c-1.5.9-2.7,2.3-3.6,4s-1.3,3.7-1.3,5.9.4,4.2,1.3,5.9,2.1,3,3.6,4c1.5.9,3.2,1.4,5,1.4s3.5-.5,5-1.4Z"></path>
