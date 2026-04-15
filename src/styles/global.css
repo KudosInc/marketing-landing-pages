@@ -168,7 +168,7 @@ input, select, button {
 
 /* ===== HERO ===== */
 .hero {
-  background-image: url('/images/hero-bg.webp');
+  background-image: url('/images/hero-bg-desktop.webp');
   background-position: 100% 0;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1625,12 +1625,25 @@ input, select, button {
 }
 
 @media (max-width: 767px) {
+  .hero {
+    background-image: url('/images/hero-bg-mobile.webp');
+    background-position: center top;
+  }
+
+  .hero-locale-badge {
+    flex-wrap: wrap;
+  }
+
   .nav-actions {
     display: none;
   }
 
+  .logos-section {
+    overflow-x: clip;
+  }
+
   .logos-section .container {
-    overflow: hidden;
+    overflow-x: clip;
   }
 
   .logos-section-title {
@@ -1639,6 +1652,7 @@ input, select, button {
 
   .logos-row {
     gap: 28px;
+    justify-content: flex-start;
   }
 
   .logos-row.is-mobile-carousel {
@@ -1651,5 +1665,42 @@ input, select, button {
   .logos-row.is-mobile-carousel .logo-item {
     width: clamp(112px, 32vw, 148px);
     flex: 0 0 auto;
+  }
+
+  .integrations-section,
+  .integrations-visual {
+    overflow-x: clip;
+  }
+
+  .orbit-system {
+    --orbit-radius: 104px;
+    width: min(280px, 100%);
+    height: 280px;
+  }
+
+  .orbit-center {
+    width: 68px;
+    height: 68px;
+  }
+
+  .orbit-center img {
+    width: 54px;
+    height: 54px;
+  }
+
+  .orbit-item {
+    width: 72px;
+    height: 72px;
+  }
+
+  .orbit-icon img {
+    max-width: 52px;
+    max-height: 34px;
+  }
+
+  .footer-bottom {
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding-inline: 16px;
   }
 }
