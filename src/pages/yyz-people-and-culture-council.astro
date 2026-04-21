@@ -1,0 +1,591 @@
+---
+import '../styles/global.css';
+
+const currentYear = new Date().getFullYear();
+const legalLinks = {
+  trademarks: 'https://www.kudos.com/trademarks',
+  terms: 'https://www.kudos.com/terms-of-service',
+  privacy: 'https://www.kudos.com/privacy-policy',
+  cookies: 'https://www.kudos.com/privacy-policy',
+  status: 'https://status.kudos.com/',
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5TVQWJXG');</script>
+    <!-- End Google Tag Manager -->
+    <title>YYZ People &amp; Culture Council</title>
+    <meta
+      name="description"
+      content="Kudos® is the recognition and rewards platform designed to fit your unique workplace culture."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <style>
+      .navbar .container {
+        align-items: flex-end;
+      }
+
+      #top-form.form-card {
+        min-height: 543px;
+      }
+
+      .logos-section {
+        background-color: #fff;
+      }
+
+      .logos-row .logo-item img,
+      .logos-row .logo-item svg {
+        filter: grayscale(100%);
+        opacity: 0.65;
+        transition: filter 0.3s, opacity 0.3s;
+      }
+
+      .logos-row .logo-item {
+        box-sizing: border-box;
+      }
+
+      .logos-row .logo-item img {
+        width: var(--logo-width, 100%);
+        margin: 0 auto;
+      }
+
+      .logos-row .logo-item svg {
+        width: var(--logo-width, 100%);
+        height: auto;
+        max-height: 48px;
+        margin: 0 auto;
+        color: #333;
+      }
+
+      .logos-row .logo-item-mnp {
+        --logo-width: 92%;
+      }
+
+      .logos-row .logo-item-atco {
+        --logo-width: 90%;
+      }
+
+      .logos-row .logo-item-neo {
+        --logo-width: 84%;
+      }
+
+      .logos-row .logo-item-nbc {
+        --logo-width: 88%;
+      }
+
+      .logos-row .logo-item-pcl {
+        --logo-width: 100%;
+        width: 129px;
+      }
+
+      .logos-row .logo-item-pcl img {
+        max-height: 59px;
+      }
+
+      .logos-row .logo-item-jobber {
+        --logo-width: 94%;
+      }
+
+      .logos-row .logo-item svg path {
+        fill: currentColor;
+      }
+
+      .logos-row .logo-item:hover img,
+      .logos-row .logo-item:hover svg {
+        filter: grayscale(100%);
+        opacity: 0.9;
+      }
+
+      .hero-list-label,
+      .hero-list {
+        font-size: 1.15em;
+      }
+
+      .hero-content {
+        top: 0;
+        max-width: 720px;
+        padding-right: 0;
+      }
+
+      .hero-title {
+        margin-bottom: 0.24em;
+      }
+
+      .hero-subtitle {
+        max-width: 42ch;
+        margin-top: 0;
+        margin-bottom: 26px;
+        color: rgba(247, 249, 251, 0.92);
+        font-size: 1.15em;
+        font-weight: 500;
+        line-height: 1.65;
+      }
+
+      .hero-list-label {
+        margin-bottom: 12px;
+      }
+
+      .hero-list {
+        max-width: 30ch;
+      }
+
+      .hero-list li {
+        font-size: 1em;
+        margin-bottom: 10px;
+      }
+
+      .hero-pricing-note {
+        font-size: 1.08em;
+      }
+
+      .yyz-hero-topic {
+        max-width: 40ch;
+        color: rgba(242, 240, 234, 0.95);
+        font-family: 'Figtree', sans-serif;
+        font-size: 1.34rem;
+        font-weight: 600;
+        line-height: 1.45;
+        margin: 0 0 28px;
+      }
+
+      .yyz-hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 12px;
+        max-width: 760px;
+        margin: 0 0 20px;
+      }
+
+      .yyz-hero-meta-item {
+        width: min(100%, 14.25rem);
+        max-width: 100%;
+        min-width: 0;
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background-color 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .yyz-hero-meta-item:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.11);
+        box-shadow: 0 12px 24px rgba(8, 12, 18, 0.16);
+      }
+
+      .yyz-hero-meta-label {
+        display: block;
+        margin-bottom: 4px;
+        color: rgba(242, 240, 234, 0.76);
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .yyz-hero-meta-value {
+        margin: 0;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      .yyz-hero-meta-value a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        line-height: inherit;
+        text-decoration: underline;
+        text-decoration-color: rgba(255, 255, 255, 0.35);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.14em;
+      }
+
+      .yyz-hero-meta-value a:hover {
+        color: #fff;
+        text-decoration-color: currentColor;
+      }
+
+      .yyz-hero-link-icon {
+        width: 0.92em;
+        height: 0.92em;
+        flex-shrink: 0;
+        color: #ff8b74;
+      }
+
+      .yyz-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .yyz-hero-meta-item {
+          transition: none;
+        }
+
+        .yyz-hero-meta-item:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+
+      .yyz-navbar-brand img {
+        height: 73px;
+        width: auto;
+        transform: translateY(8px);
+      }
+
+      .yyz-sponsor {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        align-self: center;
+      }
+
+      .yyz-sponsor-label {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        margin-bottom: 4px;
+        color: #fff;
+        font-size: 0.64rem;
+        font-style: italic;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .yyz-sponsor-logo img {
+        height: 36px;
+        width: auto;
+      }
+
+      @media (max-width: 767px) {
+        .yyz-navbar-brand img {
+          height: 60px;
+          transform: translateY(6px);
+        }
+
+        .yyz-sponsor-logo img {
+          height: 30px;
+        }
+
+        .yyz-sponsor-label {
+          font-size: 0.58rem;
+        }
+
+        .yyz-hero-topic {
+          font-size: 1.18rem;
+        }
+
+        .yyz-hero-meta {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .yyz-hero-meta-item {
+          width: 100%;
+          min-width: 0;
+        }
+
+      }
+    </style>
+  </head>
+  <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5TVQWJXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a
+        href="/yyz-people-and-culture-council"
+        class="logo yyz-navbar-brand"
+        aria-label="YYZ People and Culture Council"
+      >
+        <img
+          src="https://cdn.prod.website-files.com/61832088cc97eb7451c81c32/67c0b8d9d6a66d9967b4e59d_People-Culture-Council-Logo-Web-Gold.svg"
+          alt="YYZ People and Culture Council"
+        >
+      </a>
+      <div class="yyz-sponsor">
+        <span class="yyz-sponsor-label">Sponsored by</span>
+        <a href="https://www.kudos.com" class="logo yyz-sponsor-logo" aria-label="Kudos home">
+          <img src="/images/kudos-logo.svg" alt="Kudos">
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">YYZ People &amp; Culture Council</h1>
+        <p class="yyz-hero-topic">AI in the Workplace: Challenges &amp; Learnings from Toronto HR Leaders</p>
+        <div class="yyz-hero-meta" aria-label="Event details">
+          <div class="yyz-hero-meta-item">
+            <span class="yyz-hero-meta-label">When</span>
+            <p class="yyz-hero-meta-value">June 3, 6-8 PM</p>
+          </div>
+          <div class="yyz-hero-meta-item">
+            <span class="yyz-hero-meta-label">Where</span>
+            <p class="yyz-hero-meta-value">
+              <a
+                href="https://www.google.com/maps/place/LOCAL+Public+Eatery+Adelaide/@43.6489964,-79.3850019,18.18z/data=!4m6!3m5!1s0x882b35f03cbbb9e9:0xc324e1026e82dc46!8m2!3d43.6489576!4d-79.3843408!16s%2Fg%2F11lcr945zl?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LOCAL Public Eatery, opens in a new tab"
+              >
+                LOCAL Public Eatery
+                <svg class="yyz-hero-link-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M6 3H3.75A1.75 1.75 0 0 0 2 4.75v7.5C2 13.2165 2.7835 14 3.75 14h7.5A1.75 1.75 0 0 0 13 12.25V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M8.5 2H14v5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M14 2 7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="yyz-visually-hidden">Opens in a new tab</span>
+              </a>
+            </p>
+          </div>
+        </div>
+        <p class="hero-subtitle">
+          Connect with HR leaders from prominent Toronto-area organizations to learn, share ideas, and support one-another.
+        </p>
+        <p class="hero-list-label">People &amp; Culture Council Events Always Include:</p>
+        <ul class="hero-list">
+          <li>Topical Group Discussion</li>
+          <li>Networking</li>
+          <li>Food &amp; Refreshments</li>
+          <li>Fun Experiences</li>
+        </ul>
+        <div class="hero-secondary-actions">
+          <p class="hero-pricing-note">Have questions? <a href="mailto:garrett.genest@kudos.com">Get in touch here.</a></p>
+        </div>
+      </div>
+
+      <div class="form-card" id="top-form">
+        <h2 class="form-card-title">Event Registration</h2>
+        <div class="hubspot-form hubspot-form-hero">
+          <div class="hs-form-frame" data-region="na1" data-form-id="230a4068-a9c7-4220-b568-3ee462644cd6" data-portal-id="21201461"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logo Strip -->
+  <section class="logos-section">
+    <div class="container">
+      <h2 class="logos-section-title">
+        Members Include
+      </h2>
+      <div class="logos-row">
+        <div class="logo-item logo-item-mnp">
+          <img src="https://cdn.prod.website-files.com/61832088cc97eb7451c81c32/67c0ba6ed6a66d9967b692ab_MNP-Logo-Greyscale.svg" alt="MNP">
+        </div>
+        <div class="logo-item logo-item-atco">
+          <img src="https://cdn.prod.website-files.com/61832088cc97eb7451c81c32/67c0b963e4a29d8d472a2e59_atco-logo-greyscale.svg" alt="ATCO">
+        </div>
+        <div class="logo-item logo-item-neo" aria-label="Neo Financial">
+          <svg role="img" aria-label="Neo Financial" fill="none" height="20" viewBox="0 0 66 20" width="66" xmlns="http://www.w3.org/2000/svg" class="fill-black"><g data-testid="logo-path-group"><path d="m54.9843.419091c-8.5745 0-11.0148 5.839089-11.0148 9.790909 0 3.9518 2.4403 9.79 11.0148 9.79 8.5744 0 11.0157-5.8391 11.0157-9.79 0-3.95091-2.4413-9.790909-11.0157-9.790909zm0 18.189109c-3.1688 0-3.2954-3.1746-3.2954-8.3982 0-5.22364.1266-8.39909 3.2954-8.39909 3.1687 0 3.2954 3.17545 3.2954 8.39909 0 5.2236-.1267 8.3982-3.2954 8.3982z"></path><path d="m43.0146 14.8664c-4.4018 2.5991-9.1346.8354-10.6866-4.1709 7.0548-1.18186 10.401-2.43095 10.401-5.06095 0-2.54546-2.3821-5.481823-7.7453-5.196368-7.9773.425454-9.8279 6.304548-9.8279 9.774518 0 6.9737 5.4057 9.7873 9.5284 9.7873 3.4405 0 6.9032-2.0573 8.7593-4.1973zm-8.0309-13.04822c1.2442 0 2.4847 1.06182 2.4847 3.02909 0 2.47909-1.0168 3.85091-5.4233 4.59-.2754-1.99909-.5971-7.61909 2.9386-7.61909z"></path><path d="m10.0174 0c-2.94316 2.26501-6.36687 3.84961-10.0174 4.63636.488992.18182 3.40445 1.11819 3.40445 3.69546v7.33178c0 1.8637-.86336 2.2264-2.416299 2.4937v1.0245h12.097249v-1.0282c-1.553-.2672-2.4154-.63-2.4154-2.4936v-7.33182c0-2.77272.5361-4.68636 2.8581-4.68636 2.2555 0 2.5458 1.95727 2.5458 4.68636v10.85002h9.6485v-1.0246c-1.5529-.2672-2.4163-.63-2.4163-2.4936v-9.22636c0-3.30909-1.5122-6.014549-6.1701-6.014549-2.3341 0-5.1987.979089-7.1177 3.027269z"></path></g></svg>
+        </div>
+        <div class="logo-item logo-item-nbc">
+          <img src="https://www.nbc.ca/content/dam/bnc/commun/logo/logo-nbc-155x50.svg" alt="National Bank of Canada">
+        </div>
+        <div class="logo-item logo-item-pcl">
+          <img src="https://www.pcl.com/content/dam/logos/PCL_Const.svg" alt="PCL Construction">
+        </div>
+        <div class="logo-item logo-item-jobber" aria-label="Jobber">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 367.3 65.7" color="#f2f0ea" role="img" aria-label="Jobber">
+            <path fill="currentColor" d="M93.7,55.7c-2.9-1.4-5.1-3.4-6.6-5.9-1.5-2.5-2.3-5.3-2.3-8.3l14.7-1.5c.3,1.3.7,2.4,1.4,3.1.6.7,1.6,1.1,2.9,1.1s2.1-.3,2.8-1c.7-.7,1-1.6,1-2.9V8.8h15.2v31.2c0,3.5-.8,6.6-2.3,9.3-1.5,2.7-3.7,4.8-6.6,6.3-2.9,1.5-6.2,2.2-10.1,2.2s-7.2-.7-10.1-2.2Z"></path>
+            <path fill="currentColor" d="M141,54.5c-3.8-2.3-6.9-5.3-9.1-9.1-2.2-3.8-3.3-8-3.3-12.5s1.1-8.7,3.3-12.5c2.2-3.8,5.2-6.9,9.1-9.1,3.8-2.2,8.1-3.4,12.8-3.4s8.9,1.1,12.8,3.4,6.9,5.3,9.1,9.1c2.2,3.8,3.3,8,3.3,12.5s-1.1,8.7-3.3,12.5c-2.2,3.8-5.2,6.9-9.1,9.1s-8.1,3.4-12.8,3.4-8.9-1.1-12.8-3.4ZM158.7,42.7c1.5-.9,2.7-2.3,3.6-4,.9-1.7,1.3-3.7,1.3-5.9s-.4-4.2-1.3-5.9c-.9-1.7-2.1-3-3.6-4-1.5-.9-3.2-1.4-5-1.4s-3.5.5-5,1.4c-1.5.9-2.7,2.3-3.6,4s-1.3,3.7-1.3,5.9.4,4.2,1.3,5.9,2.1,3,3.6,4c1.5.9,3.2,1.4,5,1.4s3.5-.5,5-1.4Z"></path>
+            <path fill="currentColor" d="M225,35.5c1.6,1.9,2.4,4.4,2.4,7.3s-.7,5-2,7.2c-1.3,2.1-3.2,3.8-5.7,5-2.5,1.2-5.4,1.8-8.7,1.8h-26.1V8.8h24.5c3.3,0,6.1.6,8.6,1.7,2.4,1.1,4.3,2.6,5.5,4.5,1.3,1.9,1.9,4,1.9,6.2s-.6,4.6-1.7,6.3c-1.1,1.7-2.5,3-4.1,3.9,1.9.8,3.6,2.1,5.2,4.1ZM200.2,19.8v7.5h5.6c1.2,0,2.2-.4,3-1.1.8-.7,1.1-1.6,1.1-2.7s-.4-2-1.1-2.7c-.8-.7-1.7-1.1-3-1.1h-5.6ZM207.3,45.9c1.4,0,2.5-.4,3.3-1.2.8-.8,1.3-1.8,1.3-3.1s-.4-2.3-1.3-3.1c-.8-.8-2-1.2-3.3-1.2h-7.1v8.6h7.1Z"></path>
+            <path fill="currentColor" d="M272.9,35.5c1.6,1.9,2.4,4.4,2.4,7.3s-.7,5-2,7.2c-1.3,2.1-3.2,3.8-5.7,5-2.5,1.2-5.4,1.8-8.7,1.8h-26.1V8.8h24.5c3.3,0,6.1.6,8.6,1.7,2.4,1.1,4.3,2.6,5.5,4.5,1.3,1.9,1.9,4,1.9,6.2s-.6,4.6-1.7,6.3c-1.1,1.7-2.5,3-4.1,3.9,1.9.8,3.6,2.1,5.2,4.1ZM248.1,19.8v7.5h5.6c1.2,0,2.2-.4,3-1.1.8-.7,1.1-1.6,1.1-2.7s-.4-2-1.1-2.7c-.8-.7-1.7-1.1-3-1.1h-5.6ZM255.2,45.9c1.4,0,2.5-.4,3.3-1.2.8-.8,1.3-1.8,1.3-3.1s-.4-2.3-1.3-3.1c-.8-.8-2-1.2-3.3-1.2h-7.1v8.6h7.1Z"></path>
+            <path fill="currentColor" d="M296,38.3v5.8h21.7v12.7h-36.9V8.8h36.2v12.7h-21v5.1h18.4v11.7h-18.4Z"></path>
+            <path fill="currentColor" d="M350.6,56.8l-8.3-14.4h-3.1v14.4h-15.2V8.8h23c3.6,0,6.8.7,9.6,2.2,2.8,1.5,4.9,3.5,6.4,6s2.3,5.4,2.3,8.6-.7,5.5-2.2,7.8c-1.4,2.3-3.5,4.2-6.1,5.7l10.4,17.7h-16.7ZM338.5,20.8v9.9h6c1.6,0,2.8-.5,3.8-1.4,1-.9,1.4-2.1,1.4-3.6s-.5-2.7-1.4-3.6c-1-.9-2.2-1.4-3.8-1.4h-6Z"></path>
+            <path fill="currentColor" d="M56.1.6c-.4-.4-.8-.6-1.3-.6h-30.7C10.8,0,0,10.8,0,24.1v30.7c0,.5.2,1,.6,1.3l9,9c.4.4.8.6,1.3.6h30.7c13.3,0,24.1-10.8,24.1-24.1V11c0-.5-.2-1-.6-1.3L56.1.6ZM8.9,24.1v32.1c0,.6-.7.8-1.1.4l-2.9-2.9c0,0-.2-.3-.2-.4v-29.2C4.7,13.4,13.4,4.7,24.1,4.7h27.5c.3,0,.6.3.6.6v36.3c0,5.9-4.8,10.6-10.6,10.6h-18.4c-.4,0-.7-.4-.6-.9l1.1-2.9c0-.2.3-.4.6-.4h16.5c4.1,0,7.4-3.3,7.4-7.4V9.5c0-.3-.3-.6-.6-.6h-23.5c-8.4-.1-15.2,6.8-15.2,15.2ZM22.3,42.9v-17.9c0-1.5,1.2-2.8,2.8-2.8h17.9c.3,0,.6.3.6.6v17.9c0,1.5-1.2,2.8-2.8,2.8h-17.9c-.3,0-.6-.3-.6-.6ZM61.1,41.6c0,10.7-8.7,19.4-19.4,19.4H14.1c-.3,0-.6-.3-.6-.6V24.1c0-5.9,4.8-10.6,10.6-10.6h18.5c.4,0,.7.4.6.9l-1.1,2.9c0,.2-.3.4-.6.4h-16.5c-4.1,0-7.4,3.3-7.4,7.4v31.3c0,.3.3.6.6.6h23.4c8.4,0,15.3-6.8,15.3-15.3V9.5c0-.6.7-.8,1.1-.4l2.9,2.9c0,0,.2.3.2.4v29.2Z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <h2>From our members...</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">
+            <img src="/images/quotation-marks.svg" alt="">
+          </div>
+          <p class="testimonial-text">The YYC People and Culture Council hosted by Kudos has provided an excellent opportunity to network and build relationships with like-minded individuals. The gatherings are well-thought-out and engaging, leaving the council members feeling rewarded and inspired. The council’s initiatives have fostered a sense of community and collaboration among participants.</p>
+          <p class="testimonial-author">Kailey Webster</p>
+          <p class="testimonial-role">National VP, Human Capital,<br>MNP</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">
+            <img src="/images/quotation-marks.svg" alt="">
+          </div>
+          <p class="testimonial-text">The YYC People &amp; Culture Council offers me valuable networking opportunities and access to the latest HR resources, significantly enhancing my professional development. It keeps me informed about local employment trends and connects me with other leaders who share similar challenges. Additionally, it is a support system of peers who understand the unique demands of our city, enriching my personal growth.</p>
+          <p class="testimonial-author">Mary Kovacs</p>
+          <p class="testimonial-role">Chief People Officer,<br>FYidoctors</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="logo" style="justify-content: center;">
+        <img src="/images/kudos-logo.svg" alt="Kudos">
+      </div>
+      <p class="footer-copyright">&copy; <span>{currentYear}</span> Copyright Kudos®, Inc.<br>All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://js.hsforms.net/forms/embed/21201461.js" defer></script>
+  <script>
+    (() => {
+      const collectTrackingParams = () => {
+        const source = new URLSearchParams(window.location.search);
+        const passthrough = new URLSearchParams();
+
+        source.forEach((value, key) => {
+          const lowerKey = key.toLowerCase();
+          const isUtm = lowerKey.startsWith('utm_');
+          const isGoogleClickId = lowerKey === 'gclid' || lowerKey === 'gbraid' || lowerKey === 'wbraid';
+
+          if (isUtm || isGoogleClickId) passthrough.set(key, value);
+        });
+
+        return passthrough;
+      };
+
+      const applyTrackingToOutboundLinks = () => {
+        const trackingParams = collectTrackingParams();
+        const hasTrackingParams = [...trackingParams.keys()].length > 0;
+
+        document.querySelectorAll('a[href]').forEach((link) => {
+          const rawHref = link.getAttribute('href');
+          if (!rawHref) return;
+          if (rawHref.startsWith('#') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:') || rawHref.startsWith('javascript:')) return;
+
+          let url;
+          try {
+            url = new URL(link.href, window.location.href);
+          } catch {
+            return;
+          }
+
+          if (!/^https?:$/.test(url.protocol)) return;
+          if (url.origin === window.location.origin) return;
+
+          link.target = '_blank';
+          const relTokens = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+          relTokens.add('noopener');
+          relTokens.add('noreferrer');
+          link.setAttribute('rel', [...relTokens].join(' '));
+
+          if (!hasTrackingParams) return;
+
+          trackingParams.forEach((value, key) => {
+            if (!url.searchParams.has(key)) {
+              url.searchParams.set(key, value);
+            }
+          });
+
+          link.href = url.toString();
+        });
+      };
+
+      const initMobileLogoCarousel = () => {
+        const logosRow = document.querySelector('.logos-row');
+        if (!logosRow) return;
+
+        const mobileQuery = window.matchMedia('(max-width: 767px)');
+        let frameId = 0;
+
+        const updateCarousel = () => {
+          frameId = 0;
+          const originalItems = [...logosRow.querySelectorAll('.logo-item:not([data-logo-clone="true"])')];
+          const clones = [...logosRow.querySelectorAll('.logo-item[data-logo-clone="true"]')];
+
+          if (!mobileQuery.matches) {
+            clones.forEach((clone) => clone.remove());
+            logosRow.classList.remove('is-mobile-carousel');
+            logosRow.style.removeProperty('--logos-scroll-distance');
+            return;
+          }
+
+          if (clones.length === 0) {
+            originalItems.forEach((item) => {
+              const clone = item.cloneNode(true);
+              clone.dataset.logoClone = 'true';
+              clone.setAttribute('aria-hidden', 'true');
+              clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+              logosRow.appendChild(clone);
+            });
+          }
+
+          const gap = parseFloat(getComputedStyle(logosRow).gap || '0');
+          const scrollDistance = originalItems.reduce((sum, item) => sum + item.getBoundingClientRect().width, 0) + (originalItems.length * gap);
+          logosRow.style.setProperty('--logos-scroll-distance', `${scrollDistance}px`);
+          logosRow.classList.add('is-mobile-carousel');
+        };
+
+        const scheduleUpdate = () => {
+          if (frameId) return;
+          frameId = window.requestAnimationFrame(updateCarousel);
+        };
+
+        mobileQuery.addEventListener?.('change', scheduleUpdate);
+        window.addEventListener('resize', scheduleUpdate, { passive: true });
+        window.addEventListener('load', scheduleUpdate, { once: true });
+        logosRow.querySelectorAll('.logo-item img').forEach((img) => {
+          if (!img.complete) img.addEventListener('load', scheduleUpdate, { once: true });
+        });
+
+        scheduleUpdate();
+      };
+
+      applyTrackingToOutboundLinks();
+      initMobileLogoCarousel();
+    })();
+  </script>
+
+  </body>
+</html>
