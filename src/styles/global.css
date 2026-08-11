@@ -1490,11 +1490,68 @@ input, select, button {
   background: transparent;
 }
 
-@media (max-height: 820px) and (min-width: 992px) {
+/* Desktop: title and subtitle move into the left (video) column so the form
+   column starts at the top of the dialog. The video column runs ~350px shorter
+   than the form, so it absorbs the header for free and the dialog's height
+   becomes a function of the form column plus the dialog's own padding. */
+@media (min-width: 992px) {
+  .exit-intent-dialog {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    grid-template-areas:
+      'title form'
+      'subtitle form'
+      'media form';
+    /* The form spans all three rows and is the taller column. Pinning the first
+       two rows to their content keeps the header tight and pushes the leftover
+       height into the media row, rather than spreading it between the lines. */
+    grid-template-rows: min-content min-content 1fr;
+    column-gap: 24px;
+    align-content: start;
+  }
+
+  .exit-intent-content {
+    display: contents;
+  }
+
+  .exit-intent-title {
+    grid-area: title;
+    padding-inline: 0;
+    text-align: left;
+  }
+
+  .exit-intent-subtitle {
+    grid-area: subtitle;
+    text-align: left;
+  }
+
+  .exit-intent-media {
+    grid-area: media;
+    align-self: start;
+  }
+
+  .exit-intent-form-column {
+    grid-area: form;
+    align-self: start;
+  }
+
+  /* Shares the form's grid cell. Sticky plus its negative margins keep this at
+     zero flow height, so it overlays the form card's corner without adding any. */
+  .exit-intent-close {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: start;
+    justify-self: end;
+    box-shadow: 0 2px 8px rgba(20, 32, 49, 0.18);
+  }
+}
+
+/* Short viewports (13" laptops). Only the form column and the dialog padding
+   drive height now — the video column has slack, so shrinking it buys nothing. */
+@media (max-height: 900px) and (min-width: 992px) {
   .exit-intent-dialog {
     --exit-dialog-padding-x: 24px;
-    --exit-dialog-padding-top: 24px;
-    padding-bottom: 20px;
+    --exit-dialog-padding-top: 16px;
+    padding-bottom: 14px;
   }
 
   .exit-intent-title {
@@ -1506,21 +1563,30 @@ input, select, button {
     margin-bottom: 16px;
   }
 
-  .exit-intent-content {
-    gap: 18px;
-  }
-
   .exit-intent-media {
     padding-bottom: 54px;
   }
 
   .exit-intent-form {
-    padding-top: 22px;
-    padding-bottom: 12px;
+    padding-top: 14px;
+    padding-bottom: 8px;
+  }
+
+  .exit-intent-form-heading {
+    margin-bottom: 8px;
+    font-size: 1.15em;
   }
 
   .exit-intent-form .hs-form-frame {
     min-height: 360px;
+  }
+}
+
+/* 13.3" Air at 1440x900 leaves ~750px. Drop the in-form heading, which repeats
+   the modal title sitting directly above it, to claw back the last ~32px. */
+@media (max-height: 800px) and (min-width: 992px) {
+  .exit-intent-form-heading {
+    display: none;
   }
 }
 
