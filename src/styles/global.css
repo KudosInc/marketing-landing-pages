@@ -1490,11 +1490,96 @@ input, select, button {
   background: transparent;
 }
 
-@media (max-height: 820px) and (min-width: 992px) {
+/* Desktop: title and subtitle move into the left (video) column so the form
+   column starts at the top of the dialog. The video column runs ~350px shorter
+   than the form, so it absorbs the header for free and the dialog's height
+   becomes a function of the form column plus the dialog's own padding. */
+@media (min-width: 992px) {
+  /* Scoped away from .demo-video-modal-dialog, a single-column form-only
+     variant that shares the .exit-intent-dialog class but has no video,
+     header, or .exit-intent-content wrapper to place. */
+  .exit-intent-dialog:not(.demo-video-modal-dialog) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    grid-template-areas:
+      'headroom form'
+      'title    form'
+      'subtitle form'
+      'media    form'
+      'footroom form';
+    /* The form spans every row and is the taller column. The header and video
+       rows size to their content; the empty 1fr rows above and below split the
+       leftover height evenly, so the left column sits centred against the form
+       instead of pinned to the top, and the header lines stay tight together. */
+    grid-template-rows: 1fr min-content min-content min-content 1fr;
+    column-gap: 24px;
+  }
+
+  .exit-intent-content {
+    display: contents;
+  }
+
+  /* Header keeps the dialog's centred text alignment, now centred over the
+     video column rather than the full dialog width. */
+  .exit-intent-title {
+    grid-area: title;
+    padding-inline: 0;
+  }
+
+  .exit-intent-subtitle {
+    grid-area: subtitle;
+  }
+
+  .exit-intent-media {
+    grid-area: media;
+  }
+
+  .exit-intent-form-column {
+    grid-area: form;
+    align-self: start;
+  }
+
+  /* The close button moves outside the dialog, so the dialog has to stop
+     clipping and reserve horizontal room for it. Vertical overflow hands off to
+     .exit-intent-modal, which already scrolls.
+     The dialog is centred, so the room right of it is (reservation / 2) plus the
+     modal's padding, and the button needs 14px + 34px = 48px. 96px keeps that
+     true even at the 12px end of the modal's clamped padding. Only bites below
+     ~1140px wide; at 1440px the 1040px cap still wins, so the form column keeps
+     its current width. */
+  .exit-intent-dialog {
+    width: min(1040px, 100% - 96px);
+    max-height: none;
+    overflow: visible;
+    margin-block: auto;
+  }
+
+  /* flex-start plus the auto block margins above still centres the dialog when
+     it fits, but lets it start at the top when it is taller than the viewport,
+     rather than clipping its top edge out of reach the way centring does. */
+  .exit-intent-modal {
+    align-items: flex-start;
+  }
+
+  /* Absolutely positioned so it leaves the flow entirely. No grid-area here on
+     purpose: a placed abspos grid child takes that area as its containing
+     block, which would break `left: 100%`. */
+  .exit-intent-close {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin: 0 0 0 14px;
+    box-shadow: 0 2px 8px rgba(20, 32, 49, 0.18);
+  }
+}
+
+/* Short viewports (13" laptops). Only the form column and the dialog padding
+   drive height now — the video column has slack, so shrinking it buys nothing. */
+@media (max-height: 900px) and (min-width: 992px) {
   .exit-intent-dialog {
     --exit-dialog-padding-x: 24px;
-    --exit-dialog-padding-top: 24px;
-    padding-bottom: 20px;
+    --exit-dialog-padding-top: 16px;
+    padding-bottom: 14px;
   }
 
   .exit-intent-title {
@@ -1506,21 +1591,32 @@ input, select, button {
     margin-bottom: 16px;
   }
 
-  .exit-intent-content {
-    gap: 18px;
-  }
-
   .exit-intent-media {
     padding-bottom: 54px;
   }
 
   .exit-intent-form {
-    padding-top: 22px;
-    padding-bottom: 12px;
+    padding-top: 14px;
+    padding-bottom: 8px;
+  }
+
+  .exit-intent-form-heading {
+    margin-bottom: 8px;
+    font-size: 1.15em;
   }
 
   .exit-intent-form .hs-form-frame {
     min-height: 360px;
+  }
+}
+
+/* 13.3" Air at 1440x900 leaves ~750px. Drop the in-form heading, which repeats
+   the modal title sitting directly above it, to claw back the last ~32px.
+   Not on the demo-video modal: there the heading is the dialog's only visible
+   label and its aria-labelledby target, with no title above it to duplicate. */
+@media (max-height: 800px) and (min-width: 992px) {
+  .exit-intent-dialog:not(.demo-video-modal-dialog) .exit-intent-form-heading {
+    display: none;
   }
 }
 
