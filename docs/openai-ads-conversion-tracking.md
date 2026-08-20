@@ -26,48 +26,88 @@ looks like after the SDK loads, not proof that `init` never ran. Check for
 
 ## What the page sends
 
-On a successful HubSpot form submission:
+Two events, deliberately separate. **Bind ad conversion tags to
+`kudos_form_conversion` only.**
 
 ```js
+// ONE per person, deduped. For ad tags.
 window.dataLayer.push({
   event: 'kudos_form_conversion',
   form_location: 'main',            // 'main' | 'exit_intent' | 'unknown'
   hubspot_form_id: '752783ec-...',
-  conversion_event_id: '9f8c...',   // UUID, use as the dedupe key
+  conversion_event_id: '9f8c...',   // UUID, use as the pixel's event_id
+  page_path: '/employee-recognition'
+});
+
+// EVERY submission, not deduped. Site analytics only — no ad tag on this one.
+window.dataLayer.push({
+  event: 'kudos_form_submit',
+  form_location: 'exit_intent',
+  hubspot_form_id: 'b72aaabd-...',
   page_path: '/employee-recognition'
 });
 ```
 
+The split exists because the two consumers want different things. Ad platforms
+need one conversion per lead or cost-per-lead is understated; site analytics
+wants every submission so per-form counts stay accurate. Sending one event for
+both would force a choice between an inflated conversion count and a lossy
+analytics count.
+
 ### `form_location`
 
 `main` is the in-page form, `exit_intent` is the form in the exit-intent modal.
-The label is derived from the DOM at submit time — the script checks whether the
-form's frame sits inside `.exit-intent-modal` — rather than from a form-id lookup
-table, because **the same HubSpot form id is used in different roles across
-these pages**: `b72aaabd-...` is the exit-intent form on four pages but is the
-only, primary form on `demo-video`, which has no modal. A lookup table would
-report demo-video's main conversion as `exit_intent`.
 
-`unknown` means a `hsFormCallback` arrived for a form id with no matching frame
-in the DOM. It is reported rather than dropped so it shows up in reporting
-instead of silently vanishing. If you see `unknown` in production, a form was
-added without the frame markup this script looks for.
+The label is derived from the DOM rather than from a form-id lookup table,
+because **the same HubSpot form id is used in different roles across these
+pages**: `b72aaabd-...` is the exit-intent form on four pages but is the only,
+primary form on `demo-video`, which has no modal. It is also reused on the
+organic `www.kudos.com/demo/video` page. A lookup table would report
+demo-video's main conversion as `exit_intent`, and matching on the id alone
+would book organic visitors as ad conversions.
+
+The map is **snapshotted at page load**, not looked up when the callback
+arrives. If HubSpot replaces or removes the `.hs-form-frame` element as part of
+rendering its thank-you state, a lookup at submit time would find nothing and
+every event would collapse to `unknown`. Snapshotting sidesteps that ordering
+question entirely.
+
+`unknown` means a callback arrived for a form id that was never in the DOM. It
+is reported rather than dropped so it surfaces in reporting instead of silently
+vanishing. Seeing it in production means a form was added without the frame
+markup this script looks for.
 
 ### `conversion_event_id`
 
-A fresh UUID per counted conversion. Pass it as `event_id` so the pixel and any
-future Conversions API call for the same submission are deduplicated rather than
-double-counted.
+A fresh UUID per counted conversion, on the conversion event only. Pass it as
+the pixel's `event_id` so a retry, a second device, or a later Conversions API
+call for the same submission dedupes instead of double-counting.
 
 ### Deduplication behaviour
 
-The script counts **one conversion per person per form role**, keyed in
-`localStorage` under `kudos:conv:<form_location>`. A returning visitor who
-submits the same form again does not produce a second event; `main` and
-`exit_intent` are tracked independently, so one person can produce at most one
-of each. If `localStorage` is unavailable (private mode), dedupe falls back to
-per-pageview, which still prevents HubSpot's repeated messages from
-double-firing.
+**One conversion per person**, not one per form. A single `localStorage` key,
+`kudos:conv:lead`, holds the event id and a timestamp. Someone who submits the
+main form and later the exit-intent form is one contact in HubSpot, so they are
+one conversion here; `form_location` records whichever fired first. Counting per
+form role would have produced a 2× overcount on exactly the metric spend
+decisions are gated on.
+
+The key carries a **90-day TTL**. Without one, a visitor who converted once
+never counts again and the pixel drifts progressively below the CRM over
+quarters with no way to explain the gap. With it, the divergence is bounded and
+a visitor returning after 90 days is treated as a new lead. Change `TTL_DAYS` in
+the script to adjust.
+
+If `localStorage` is unavailable (private mode), dedupe falls back to
+per-pageview, which still stops HubSpot's repeated messages from double-firing.
+
+### Known undercount: consent gating
+
+Cookiebot is live on these pages. If the GTM conversion tag is gated on the
+marketing consent category, conversions will not fire for visitors who choose
+"necessary only", and the pixel will sit below HubSpot's count by that share of
+traffic. That is expected behaviour, not a broken tag — check the tag's consent
+settings in GTM before investigating a gap.
 
 ## GTM configuration (to do)
 
@@ -80,15 +120,15 @@ double-firing.
 | `DLV - hubspot_form_id` | `hubspot_form_id` |
 
 **2. Trigger** — Custom Event, event name `kudos_form_conversion`, fires on all
-occurrences.
+occurrences. Do **not** add a `form_location` condition: both form roles should
+count, because a lead is a lead whichever form produced it, and restricting to
+`exit_intent` would make platform conversions systematically lower than
+HubSpot's. `form_location` rides along as metadata for segmentation instead.
 
-To count only exit-intent submissions, add the condition `DLV - form_location`
-equals `exit_intent`. The page always emits both form roles; restricting to one
-is a trigger condition, not a code change. Deciding here rather than in the page
-also means it never depends on matching a HubSpot form GUID — which matters,
-because GUID `b72aaabd-…` is the modal form on four pages but the *only* form on
-`demo-video`, and is also reused on the organic `www.kudos.com/demo/video` page.
-Matching on the GUID would book organic visitors as ad conversions.
+Do not build a trigger on the HubSpot form GUID. `b72aaabd-…` is the modal form
+on four pages, the *only* form on `demo-video`, and is also reused on the organic
+`www.kudos.com/demo/video` page — matching on it would book organic visitors as
+ad conversions.
 
 **3. Base pixel tag** — already installed and firing; nothing to do. See
 "Current state" above.

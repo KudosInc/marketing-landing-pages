@@ -1,30 +1,58 @@
 /**
- * Emits a dataLayer event when a HubSpot form on the page is submitted, so GTM
+ * Emits dataLayer events when a HubSpot form on the page is submitted, so GTM
  * can fire ad-network conversion tags (OpenAI Ads, Google Ads, ...) without any
  * vendor snippet living in this repo.
+ *
+ * Two events, deliberately separate:
+ *
+ *   kudos_form_conversion  ONE per person, deduped, for ad tags. A person who
+ *                          submits the main form and later the exit-intent form
+ *                          is one lead in HubSpot and must be one conversion
+ *                          here, or reported cost-per-lead is inflated.
+ *   kudos_form_submit      EVERY submission, not deduped, for site analytics.
+ *                          Do NOT bind an ad conversion tag to this one.
  *
  * Why a postMessage listener rather than a submit handler: HubSpot's v2 embed
  * ("hs-form-frame") renders each form inside an iframe, so the parent document
  * never sees a submit event. Posting a message to the parent is the only
  * supported completion hook.
  *
- * Why the form label is derived from the DOM rather than a form-id lookup table:
- * the same HubSpot form id is reused in different roles across these pages.
+ * Why form roles are snapshotted at load rather than looked up on submit: if
+ * HubSpot replaces or tears down the .hs-form-frame element as part of showing
+ * its thank-you state, a lookup at submit time would find nothing and every
+ * event would collapse to 'unknown'. The map is built while the frames are
+ * definitely present.
+ *
+ * Why the role is derived from the DOM at all, rather than from a form-id table:
+ * the same HubSpot form id is used in different roles across these pages.
  * b72aaabd-... is the exit-intent form on four pages but is the only, primary
- * form on demo-video, where there is no modal at all. Asking the DOM whether the
- * frame sits inside .exit-intent-modal gets that right on every page and needs
- * no maintenance when forms are added.
+ * form on demo-video, where there is no modal. It is also reused on the organic
+ * www.kudos.com/demo/video page, so keying off the id would book organic
+ * visitors as ad conversions.
  */
 (() => {
   'use strict';
 
-  var EVENT_NAME = 'kudos_form_conversion';
-  var STORAGE_PREFIX = 'kudos:conv:';
+  var CONVERSION_EVENT = 'kudos_form_conversion';
+  var SUBMIT_EVENT = 'kudos_form_submit';
+
+  // One key for the whole conversion, not one per form role.
+  var STORAGE_KEY = 'kudos:conv:lead';
+
+  // Bounds how far the pixel can drift below the CRM over time: a visitor who
+  // converted more than this long ago and converts again counts as a new lead.
+  var TTL_DAYS = 90;
+  var TTL_MS = TTL_DAYS * 24 * 60 * 60 * 1000;
+
   var HUBSPOT_ORIGIN = /(^|\.)(hsforms\.(com|net)|hubspot\.com)$/;
 
   // Fallback when localStorage is unavailable (private mode, disabled storage).
-  // Only dedupes within the pageview, which is still better than double-firing.
-  var firedThisPageview = {};
+  // Only dedupes within the pageview, which still stops repeated postMessages
+  // from double-firing.
+  var memoryStore = {};
+
+  // formId -> 'main' | 'exit_intent', captured while the frames exist.
+  var roleByFormId = {};
 
   function isHubSpotOrigin(origin) {
     try {
@@ -53,34 +81,73 @@
     return 'kudos-' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
   }
 
-  function readStored(key) {
+  function readRaw(key) {
     try {
       return window.localStorage.getItem(key);
     } catch (err) {
-      return firedThisPageview[key] || null;
+      return Object.prototype.hasOwnProperty.call(memoryStore, key) ? memoryStore[key] : null;
     }
   }
 
-  function writeStored(key, value) {
-    firedThisPageview[key] = value;
+  function writeRaw(key, value) {
+    memoryStore[key] = value;
     try {
       window.localStorage.setItem(key, value);
     } catch (err) {
-      /* storage unavailable; in-memory dedupe above still applies */
+      /* storage unavailable; the in-memory copy above still applies */
     }
   }
 
-  /** 'exit_intent' if the form's frame is inside the exit-intent modal, else 'main'. */
-  function locationForForm(formId) {
-    if (!formId) return 'unknown';
-    var frame = null;
+  /** True if this browser already has a conversion recorded and it has not aged out. */
+  function alreadyConverted() {
+    var raw = readRaw(STORAGE_KEY);
+    if (!raw) return false;
+    var ts = null;
     try {
-      frame = document.querySelector('.hs-form-frame[data-form-id="' + String(formId).replace(/"/g, '\\"') + '"]');
+      var parsed = JSON.parse(raw);
+      ts = parsed && typeof parsed.ts === 'number' ? parsed.ts : null;
     } catch (err) {
-      frame = null;
+      ts = null;
     }
-    if (!frame) return 'unknown';
-    return frame.closest('.exit-intent-modal') ? 'exit_intent' : 'main';
+    // Unparseable or timestamp-less value: treat as converted but undated, and
+    // let it expire rather than persisting forever.
+    if (ts === null) return true;
+    return Date.now() - ts < TTL_MS;
+  }
+
+  /** Record every .hs-form-frame currently in the DOM and the role it plays. */
+  function snapshotRoles() {
+    var frames;
+    try {
+      frames = document.querySelectorAll('.hs-form-frame[data-form-id]');
+    } catch (err) {
+      return;
+    }
+    for (var i = 0; i < frames.length; i++) {
+      var id = frames[i].getAttribute('data-form-id');
+      if (!id || Object.prototype.hasOwnProperty.call(roleByFormId, id)) continue;
+      roleByFormId[id] = frames[i].closest('.exit-intent-modal') ? 'exit_intent' : 'main';
+    }
+  }
+
+  function roleFor(formId) {
+    if (!formId) return 'unknown';
+    if (Object.prototype.hasOwnProperty.call(roleByFormId, formId)) return roleByFormId[formId];
+    // Re-scan in case the form was added after the last snapshot.
+    snapshotRoles();
+    return Object.prototype.hasOwnProperty.call(roleByFormId, formId)
+      ? roleByFormId[formId]
+      : 'unknown';
+  }
+
+  function push(payload) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
+  }
+
+  snapshotRoles();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', snapshotRoles);
   }
 
   window.addEventListener('message', function (event) {
@@ -92,24 +159,27 @@
     if (payload.eventName !== 'onFormSubmitted') return;
 
     var formId = payload.id || (payload.data && payload.data.formGuid) || '';
-    var formLocation = locationForForm(formId);
+    var formLocation = roleFor(formId);
 
-    // One conversion per person per form role. A returning visitor who submits
-    // again is the same lead, so it should not be counted twice.
-    var storageKey = STORAGE_PREFIX + formLocation;
-    var existing = readStored(storageKey);
-    if (existing) return;
+    // Always emitted, never deduped — site analytics only.
+    push({
+      event: SUBMIT_EVENT,
+      form_location: formLocation,
+      hubspot_form_id: formId,
+      page_path: window.location.pathname
+    });
+
+    if (alreadyConverted()) return;
 
     var eventId = newEventId();
-    writeStored(storageKey, eventId);
+    writeRaw(STORAGE_KEY, JSON.stringify({ id: eventId, ts: Date.now() }));
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: EVENT_NAME,
+    push({
+      event: CONVERSION_EVENT,
       form_location: formLocation, // 'main' | 'exit_intent' | 'unknown'
       hubspot_form_id: formId,
-      // Pass to the ad network as its deduplication key so a retry or a second
-      // device does not create a duplicate conversion.
+      // Pass to the ad network as its deduplication key so a retry, a second
+      // device, or a later Conversions API call does not double-count.
       conversion_event_id: eventId,
       page_path: window.location.pathname
     });
