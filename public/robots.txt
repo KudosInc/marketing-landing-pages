@@ -1,2 +1,34 @@
+# get.kudos.com — paid landing pages.
+#
+# Intent: keep these pages out of organic search indexes (they exist to serve
+# paid traffic and would otherwise cannibalise www.kudos.com), while still
+# letting ad-network crawlers fetch them. Ad platforms must be able to read a
+# landing page to validate it against their policies; if the crawler is
+# blocked, the ad is not approved and the campaign does not serve.
+#
+# Named groups below take precedence over "User-agent: *" for those crawlers,
+# so the blanket disallow at the bottom does not apply to them.
+
+# OpenAI / ChatGPT Ads landing-page validation. Sends OAI-AdsBot/1.0 and only
+# fetches URLs submitted as ads. Required for ChatGPT ad approval.
+User-agent: OAI-AdsBot
+Allow: /
+
+# Google Ads landing-page review. AdsBot-Google ignores "User-agent: *" by
+# design, so it was never blocked — listed explicitly so that stays true if
+# the wildcard rule below is ever edited.
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+# Microsoft Advertising landing-page review.
+User-agent: adidxbot
+Allow: /
+
+# Everything else — organic search, AI training, and general crawlers.
+# Note this still blocks OAI-SearchBot and GPTBot, which is deliberate: paid
+# landing pages should not represent the brand in ChatGPT search results.
 User-agent: *
 Disallow: /
