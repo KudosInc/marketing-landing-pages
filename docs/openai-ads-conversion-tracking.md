@@ -103,11 +103,29 @@ per-pageview, which still stops HubSpot's repeated messages from double-firing.
 
 ### Known undercount: consent gating
 
-Cookiebot is live on these pages. If the GTM conversion tag is gated on the
-marketing consent category, conversions will not fire for visitors who choose
-"necessary only", and the pixel will sit below HubSpot's count by that share of
-traffic. That is expected behaviour, not a broken tag — check the tag's consent
-settings in GTM before investigating a gap.
+Cookiebot is live on these pages, and the gating is **upstream of the conversion
+tag**, which makes the undercount larger than it first looks.
+
+The base `ChatGPT Pixel` tag in `GTM-5TVQWJXG` has Additional Consent Checks
+requiring `ad_storage`, and fires on a `Cookie Consent` custom event. So without
+`ad_storage` consent the SDK **never loads at all** — there is no `page_viewed`
+and no `window.oaiq`, not merely a missing conversion. The expected undercount is
+the full share of visitors who do not grant `ad_storage`, and it applies to every
+event type rather than to conversions alone.
+
+The conversion tag deliberately carries no consent check of its own; it guards on
+`typeof window.oaiq !== 'function'`, which is already a no-op when the base tag
+did not run. That guard is what makes the gating safe rather than error-prone.
+
+Pull the actual percentage from the Cookiebot report. This is expected behaviour,
+not a broken tag — check here before investigating a pixel/CRM gap.
+
+Two consequences worth remembering:
+
+- A pixel count below HubSpot's is the normal steady state, not a defect. HubSpot
+  records the submission regardless of cookie consent; the pixel cannot.
+- `page_viewed` also appears to be session-deduped, so a low event count in Ads
+  Manager is not by itself evidence of a problem.
 
 ## GTM configuration (to do)
 
