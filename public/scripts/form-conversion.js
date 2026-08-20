@@ -109,9 +109,11 @@
     } catch (err) {
       ts = null;
     }
-    // Unparseable or timestamp-less value: treat as converted but undated, and
-    // let it expire rather than persisting forever.
-    if (ts === null) return true;
+    // No readable timestamp means the record can never age out, so trusting it
+    // would silence this browser's conversions permanently. Fail open and let
+    // the caller overwrite it with a well-formed record: a rare double-count is
+    // recoverable, a lead lost forever is not.
+    if (ts === null) return false;
     return Date.now() - ts < TTL_MS;
   }
 
