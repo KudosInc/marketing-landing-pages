@@ -3,3 +3,6 @@ node_modules
 dist
 .DS_Store
 paid-landing-pages-backup-20260227-142906.zip
+
+# Local inter-agent comms scratch file, not part of the deployed site
+agent-comms.md
