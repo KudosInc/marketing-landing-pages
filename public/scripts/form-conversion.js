@@ -17,18 +17,25 @@
  * never sees a submit event. Posting a message to the parent is the only
  * supported completion hook.
  *
- * Why form roles are snapshotted at load rather than looked up on submit: if
- * HubSpot replaces or tears down the .hs-form-frame element as part of showing
- * its thank-you state, a lookup at submit time would find nothing and every
- * event would collapse to 'unknown'. The map is built while the frames are
- * definitely present.
+ * Why the role comes from an explicit data-form-role attribute rather than from
+ * a form-id table or from the DOM shape:
  *
- * Why the role is derived from the DOM at all, rather than from a form-id table:
- * the same HubSpot form id is used in different roles across these pages.
- * b72aaabd-... is the exit-intent form on four pages but is the only, primary
- * form on demo-video, where there is no modal. It is also reused on the organic
- * www.kudos.com/demo/video page, so keying off the id would book organic
- * visitors as ad conversions.
+ *   - A form-id table would be wrong. The same HubSpot form id serves different
+ *     roles: b72aaabd-... is the exit-intent form on four pages, the primary
+ *     form on demo-video, and is also reused on the organic
+ *     www.kudos.com/demo/video page, so keying off the id would book organic
+ *     visitors as ad conversions.
+ *   - Inferring it from the DOM was also wrong, and shipped briefly. Checking
+ *     whether the frame sits inside .exit-intent-modal looks right but that is a
+ *     *styling* class: demo-video reuses it for a modal opened by clicking the
+ *     hero CTA, which is an intentional primary conversion, not an abandonment
+ *     rescue. The other four pages open theirs on mouseout. Same markup, oppo-
+ *     site meaning, so the label has to be declared rather than deduced.
+ *
+ * Why roles are snapshotted at load rather than read on submit: if HubSpot
+ * replaces or tears down the .hs-form-frame element while rendering its
+ * thank-you state, a lookup at submit time would find nothing and every event
+ * would collapse to 'unknown'. The map is built while the frames are present.
  */
 (() => {
   'use strict';
@@ -117,7 +124,7 @@
     return Date.now() - ts < TTL_MS;
   }
 
-  /** Record every .hs-form-frame currently in the DOM and the role it plays. */
+  /** Record every .hs-form-frame currently in the DOM and the role it declares. */
   function snapshotRoles() {
     var frames;
     try {
@@ -128,7 +135,11 @@
     for (var i = 0; i < frames.length; i++) {
       var id = frames[i].getAttribute('data-form-id');
       if (!id || Object.prototype.hasOwnProperty.call(roleByFormId, id)) continue;
-      roleByFormId[id] = frames[i].closest('.exit-intent-modal') ? 'exit_intent' : 'main';
+      var role = frames[i].getAttribute('data-form-role');
+      // Only trust roles the markup declares. An unannotated form reports as
+      // 'unknown' rather than being guessed at, so it shows up in reporting
+      // instead of quietly landing in the wrong bucket.
+      roleByFormId[id] = (role === 'main' || role === 'exit_intent') ? role : 'unknown';
     }
   }
 

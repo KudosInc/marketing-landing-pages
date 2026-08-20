@@ -31,7 +31,7 @@ function pinnedDate(now) {
 /**
  * Build a fake page and evaluate the script against it.
  *
- * @param frames  { [formId]: isInsideExitIntentModal }
+ * @param frames  { [formId]: declaredRole }  role: 'main' | 'exit_intent' | null
  * @param opts    { storageWorks, seedStorage, now }
  */
 function makeEnv(frames, opts = {}) {
@@ -62,9 +62,12 @@ function makeEnv(frames, opts = {}) {
     readyState: 'complete',
     addEventListener() {},
     querySelectorAll: () =>
-      Object.entries(liveFrames).map(([id, inModal]) => ({
-        getAttribute: name => (name === 'data-form-id' ? id : null),
-        closest: sel => (sel === '.exit-intent-modal' && inModal ? {} : null),
+      Object.entries(liveFrames).map(([id, role]) => ({
+        getAttribute: name =>
+          name === 'data-form-id' ? id : name === 'data-form-role' ? role : null,
+        // Present so a regression back to DOM-shape inference is visible: any
+        // implementation consulting this instead of data-form-role fails.
+        closest: () => null,
       })),
     querySelector: () => null,
   };
@@ -101,7 +104,7 @@ const submitted = (id, origin = HS_ORIGIN) => ({
 // --- form role labelling ----------------------------------------------------
 
 test('labels the exit-intent modal form', () => {
-  const env = makeEnv({ b72aaabd: true, '752783ec': false });
+  const env = makeEnv({ b72aaabd: 'exit_intent', '752783ec': 'main' });
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions().length, 1);
   assert.equal(env.conversions()[0].form_location, 'exit_intent');
@@ -109,23 +112,37 @@ test('labels the exit-intent modal form', () => {
 });
 
 test('labels the in-page form', () => {
-  const env = makeEnv({ b72aaabd: true, '752783ec': false });
+  const env = makeEnv({ b72aaabd: 'exit_intent', '752783ec': 'main' });
   env.fire(submitted('752783ec'));
   assert.equal(env.conversions()[0].form_location, 'main');
 });
 
-test('same form id on a page with no modal is main, not exit_intent', () => {
-  // demo-video reuses the modal form id as its only, primary form.
-  const env = makeEnv({ b72aaabd: false });
+test('same form id declared main on demo-video is not exit_intent', () => {
+  // demo-video reuses both the form id AND the .exit-intent-modal styling class,
+  // but its modal opens on a hero click, so it is a primary conversion. The
+  // declared role must win over anything inferable from the markup.
+  const env = makeEnv({ b72aaabd: 'main' });
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions()[0].form_location, 'main');
 });
 
 test('role survives HubSpot removing the frame before the callback arrives', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.removeFrames();
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions()[0].form_location, 'exit_intent');
+});
+
+test('a form with no declared role reports unknown rather than being guessed', () => {
+  const env = makeEnv({ 'unannotated-form': null });
+  env.fire(submitted('unannotated-form'));
+  assert.equal(env.conversions()[0].form_location, 'unknown');
+});
+
+test('an unrecognised role value is not trusted', () => {
+  const env = makeEnv({ weird: 'sidebar' });
+  env.fire(submitted('weird'));
+  assert.equal(env.conversions()[0].form_location, 'unknown');
 });
 
 test('a form id never present in the DOM is reported as unknown', () => {
@@ -137,7 +154,7 @@ test('a form id never present in the DOM is reported as unknown', () => {
 // --- one conversion per person ----------------------------------------------
 
 test('main then modal counts ONE conversion, not two', () => {
-  const env = makeEnv({ b72aaabd: true, '752783ec': false });
+  const env = makeEnv({ b72aaabd: 'exit_intent', '752783ec': 'main' });
   env.fire(submitted('752783ec'));
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions().length, 1);
@@ -145,20 +162,20 @@ test('main then modal counts ONE conversion, not two', () => {
 });
 
 test('both submissions still appear on the analytics event', () => {
-  const env = makeEnv({ b72aaabd: true, '752783ec': false });
+  const env = makeEnv({ b72aaabd: 'exit_intent', '752783ec': 'main' });
   env.fire(submitted('752783ec'));
   env.fire(submitted('b72aaabd'));
   assert.deepEqual(env.submits().map(e => e.form_location), ['main', 'exit_intent']);
 });
 
 test('the analytics event carries no conversion_event_id', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire(submitted('b72aaabd'));
   assert.equal(env.submits()[0].conversion_event_id, undefined);
 });
 
 test('resubmitting the same form does not double-count', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire(submitted('b72aaabd'));
   env.fire(submitted('b72aaabd'));
   env.fire(submitted('b72aaabd'));
@@ -166,7 +183,7 @@ test('resubmitting the same form does not double-count', () => {
 });
 
 test('unknown does not get its own dedupe bucket', () => {
-  const env = makeEnv({ '752783ec': false });
+  const env = makeEnv({ '752783ec': 'main' });
   env.fire(submitted('752783ec'));
   env.fire(submitted('some-form-not-in-dom'));
   assert.equal(env.conversions().length, 1);
@@ -176,7 +193,7 @@ test('unknown does not get its own dedupe bucket', () => {
 
 test('a conversion inside the TTL is suppressed', () => {
   const now = 1_800_000_000_000;
-  const env = makeEnv({ b72aaabd: true }, {
+  const env = makeEnv({ b72aaabd: 'exit_intent' }, {
     now,
     seedStorage: JSON.stringify({ id: 'previous', ts: now - 30 * DAY }),
   });
@@ -186,7 +203,7 @@ test('a conversion inside the TTL is suppressed', () => {
 
 test('a conversion past the TTL counts again as a new lead', () => {
   const now = 1_800_000_000_000;
-  const env = makeEnv({ b72aaabd: true }, {
+  const env = makeEnv({ b72aaabd: 'exit_intent' }, {
     now,
     seedStorage: JSON.stringify({ id: 'previous', ts: now - 120 * DAY }),
   });
@@ -196,7 +213,7 @@ test('a conversion past the TTL counts again as a new lead', () => {
 
 test('the stored record holds the event id and a timestamp', () => {
   const now = 1_800_000_000_000;
-  const env = makeEnv({ b72aaabd: true }, { now });
+  const env = makeEnv({ b72aaabd: 'exit_intent' }, { now });
   env.fire(submitted('b72aaabd'));
   const saved = JSON.parse(env.store.get('kudos:conv:lead'));
   assert.equal(saved.ts, now);
@@ -208,7 +225,7 @@ test('a corrupt stored record fails open and self-heals', () => {
   // silence this browser permanently. Count the conversion and replace the bad
   // record with a well-formed one.
   const now = 1_800_000_000_000;
-  const env = makeEnv({ b72aaabd: true }, { now, seedStorage: 'not json' });
+  const env = makeEnv({ b72aaabd: 'exit_intent' }, { now, seedStorage: 'not json' });
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions().length, 1);
   const healed = JSON.parse(env.store.get('kudos:conv:lead'));
@@ -217,14 +234,14 @@ test('a corrupt stored record fails open and self-heals', () => {
 });
 
 test('a record missing only the timestamp also fails open', () => {
-  const env = makeEnv({ b72aaabd: true }, { seedStorage: JSON.stringify({ id: 'x' }) });
+  const env = makeEnv({ b72aaabd: 'exit_intent' }, { seedStorage: JSON.stringify({ id: 'x' }) });
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions().length, 1);
 });
 
 test('a healed record then dedupes normally', () => {
   const now = 1_800_000_000_000;
-  const env = makeEnv({ b72aaabd: true, '752783ec': false }, { now, seedStorage: 'not json' });
+  const env = makeEnv({ b72aaabd: 'exit_intent', '752783ec': 'main' }, { now, seedStorage: 'not json' });
   env.fire(submitted('b72aaabd'));
   env.fire(submitted('752783ec'));
   assert.equal(env.conversions().length, 1, 'the rewritten record must suppress the next one');
@@ -232,14 +249,29 @@ test('a healed record then dedupes normally', () => {
 
 // --- origin trust -----------------------------------------------------------
 
+test('accepts js.hsforms.net, the origin the embed actually posts from', () => {
+  // Verified in a browser against the rendered page: both form iframes on these
+  // pages are served from js.hsforms.net, not the forms-na1.hsforms.com host the
+  // rest of these tests use. Both must be accepted.
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire(submitted('b72aaabd', 'https://js.hsforms.net'));
+  assert.equal(env.conversions().length, 1);
+});
+
+test('accepts the regional forms host as well', () => {
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire(submitted('b72aaabd', 'https://forms-na1.hsforms.com'));
+  assert.equal(env.conversions().length, 1);
+});
+
 test('ignores a message from a non-HubSpot origin', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire(submitted('b72aaabd', 'https://evil.example.com'));
   assert.equal(env.win.dataLayer, undefined);
 });
 
 test('ignores a lookalike origin such as hsforms.com.evil.com', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire(submitted('b72aaabd', 'https://hsforms.com.evil.com'));
   assert.equal(env.win.dataLayer, undefined);
 });
@@ -247,7 +279,7 @@ test('ignores a lookalike origin such as hsforms.com.evil.com', () => {
 // --- message filtering ------------------------------------------------------
 
 test('the pre-submit onFormSubmit event does not convert', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire({
     origin: HS_ORIGIN,
     data: { type: 'hsFormCallback', eventName: 'onFormSubmit', id: 'b72aaabd' },
@@ -256,7 +288,7 @@ test('the pre-submit onFormSubmit event does not convert', () => {
 });
 
 test('ignores unrelated postMessage traffic', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire({ origin: HS_ORIGIN, data: 'just a string' });
   env.fire({ origin: HS_ORIGIN, data: null });
   env.fire({ origin: HS_ORIGIN, data: { type: 'somethingElse' } });
@@ -266,14 +298,14 @@ test('ignores unrelated postMessage traffic', () => {
 // --- environment resilience -------------------------------------------------
 
 test('falls back to per-pageview dedupe when localStorage throws', () => {
-  const env = makeEnv({ b72aaabd: true, '752783ec': false }, { storageWorks: false });
+  const env = makeEnv({ b72aaabd: 'exit_intent', '752783ec': 'main' }, { storageWorks: false });
   env.fire(submitted('752783ec'));
   env.fire(submitted('b72aaabd'));
   assert.equal(env.conversions().length, 1);
 });
 
 test('appends to an existing dataLayer rather than replacing it', () => {
-  const env = makeEnv({ b72aaabd: true });
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.win.dataLayer = [{ event: 'gtm.js' }];
   env.fire(submitted('b72aaabd'));
   assert.equal(env.win.dataLayer[0].event, 'gtm.js');

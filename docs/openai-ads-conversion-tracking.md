@@ -56,26 +56,41 @@ analytics count.
 
 ### `form_location`
 
-`main` is the in-page form, `exit_intent` is the form in the exit-intent modal.
+`main` is an intentional, primary conversion. `exit_intent` is a genuine
+abandonment rescue — a modal the visitor did not ask for.
 
-The label is derived from the DOM rather than from a form-id lookup table,
-because **the same HubSpot form id is used in different roles across these
-pages**: `b72aaabd-...` is the exit-intent form on four pages but is the only,
-primary form on `demo-video`, which has no modal. It is also reused on the
-organic `www.kudos.com/demo/video` page. A lookup table would report
-demo-video's main conversion as `exit_intent`, and matching on the id alone
-would book organic visitors as ad conversions.
+The label comes from an explicit **`data-form-role`** attribute on the form's
+`.hs-form-frame` div. Both plausible alternatives are wrong here:
 
-The map is **snapshotted at page load**, not looked up when the callback
-arrives. If HubSpot replaces or removes the `.hs-form-frame` element as part of
-rendering its thank-you state, a lookup at submit time would find nothing and
-every event would collapse to `unknown`. Snapshotting sidesteps that ordering
-question entirely.
+- **A form-id lookup table** would be wrong because the same HubSpot form id
+  serves different roles. `b72aaabd-...` is the exit-intent form on four pages,
+  the primary form on `demo-video`, and is also reused on the organic
+  `www.kudos.com/demo/video` page — so matching on the id would book organic
+  visitors as ad conversions.
+- **Inferring it from the DOM** is also wrong, and shipped briefly before local
+  testing caught it. Checking whether the frame sits inside `.exit-intent-modal`
+  looks robust, but that is a *styling* class. `demo-video` reuses it
+  (`class="exit-intent-modal demo-video-modal"`) for a modal opened by clicking
+  the hero CTA — an intentional primary conversion. The other four pages open
+  theirs on `mouseout`. Identical markup, opposite meaning, so the role has to be
+  declared rather than deduced.
 
-`unknown` means a callback arrived for a form id that was never in the DOM. It
-is reported rather than dropped so it surfaces in reporting instead of silently
-vanishing. Seeing it in production means a form was added without the frame
-markup this script looks for.
+| Page | Form | Role |
+| --- | --- | --- |
+| `employee-recognition`, `employee-rewards`, `leading-employee-rewards-platform`, `leading-peer-recognition-software` | `752783ec…` in page | `main` |
+| the same four | `b72aaabd…` in `mouseout` modal | `exit_intent` |
+| `demo-video` | `b72aaabd…` in click-opened modal | `main` |
+| `yyz-people-and-culture-council` | `230a4068…` | `main` |
+
+**When adding a form, set `data-form-role`.** Without it the form reports as
+`unknown` rather than being guessed at, so it shows up in reporting instead of
+landing quietly in the wrong bucket. An unrecognised value is treated the same
+way.
+
+Roles are **snapshotted at page load**, not read when the callback arrives. If
+HubSpot replaces or removes the `.hs-form-frame` element while rendering its
+thank-you state, a read at submit time would find nothing and every event would
+collapse to `unknown`. Snapshotting sidesteps that ordering question entirely.
 
 ### `conversion_event_id`
 
