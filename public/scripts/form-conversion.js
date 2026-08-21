@@ -17,6 +17,19 @@
  * never sees a submit event. Posting a message to the parent is the only
  * supported completion hook.
  *
+ * Why both 'onFormSubmit' and 'onFormSubmitted' are accepted: both HubSpot forms
+ * used on these pages are configured to redirect off-site on submit rather than
+ * to show an inline thank-you, so the parent document is torn down by a
+ * top-level navigation and the completion callback never runs — a live test
+ * measured zero conversions from the main form. 'onFormSubmit' fires on the submit action, before the navigation, so it
+ * beats the race. A form with an inline thank-you posts both; the per-person
+ * dedupe below suppresses the second, so either configuration yields exactly one
+ * conversion without this file needing to know which is which.
+ *
+ * The accepted cost: 'onFormSubmit' fires on submit *attempt*, so submissions
+ * rejected downstream (server-side validation, reCAPTCHA) are counted. Spend is
+ * gated on CRM counts, and the reconciliation makes that gap visible.
+ *
  * Why the role comes from an explicit data-form-role attribute rather than from
  * a form-id table or from the DOM shape:
  *
@@ -60,6 +73,20 @@
 
   // formId -> 'main' | 'exit_intent', captured while the frames exist.
   var roleByFormId = {};
+
+  // formId -> true once an 'onFormSubmit' has been seen for it in this pageview.
+  // The conversion event is deduped per person, but SUBMIT_EVENT deliberately is
+  // not, so without this an inline-thank-you form (which posts both callbacks for
+  // one submission) would report two submissions while a redirect form reports
+  // one. Suppression only runs in the submit -> submitted direction, so a form
+  // that posts only 'onFormSubmitted' is unaffected.
+  var submitSeenByFormId = {};
+
+  // Temporary diagnostic. Every live payload verified so far has been
+  // 'onFormSubmitted'; where 'onFormSubmit' carries the form id is unconfirmed,
+  // and if it carries it somewhere unexpected the conversion still fires but
+  // form_location collapses to 'unknown'. Logged once per pageview.
+  var loggedSubmitPayload = false;
 
   function isHubSpotOrigin(origin) {
     try {
@@ -143,6 +170,22 @@
     }
   }
 
+  /**
+   * The form id, across callback payload shapes. 'onFormSubmitted' carries it as
+   * `id` with `data.formGuid` as a backup. The 'onFormSubmit' payload is less
+   * documented and its `data` is a field-value array rather than an object, so
+   * the extra top-level fallbacks are cheap insurance. A miss degrades
+   * gracefully: the conversion still fires, only the main/exit_intent split is
+   * lost.
+   */
+  function formIdFrom(payload) {
+    var data = payload.data;
+    var fromData = (data && typeof data === 'object' && !Array.isArray(data))
+      ? (data.formGuid || data.formId || data.id)
+      : null;
+    return payload.id || payload.formGuid || payload.formId || fromData || '';
+  }
+
   function roleFor(formId) {
     if (!formId) return 'unknown';
     if (Object.prototype.hasOwnProperty.call(roleByFormId, formId)) return roleByFormId[formId];
@@ -169,9 +212,31 @@
     var payload = event.data;
     if (!payload || typeof payload !== 'object') return;
     if (payload.type !== 'hsFormCallback') return;
-    if (payload.eventName !== 'onFormSubmitted') return;
 
-    var formId = payload.id || (payload.data && payload.data.formGuid) || '';
+    var eventName = payload.eventName;
+    if (eventName !== 'onFormSubmitted' && eventName !== 'onFormSubmit') return;
+
+    if (eventName === 'onFormSubmit' && !loggedSubmitPayload) {
+      loggedSubmitPayload = true;
+      try {
+        console.log('[kudos] raw onFormSubmit payload', payload);
+      } catch (err) {
+        /* no console available; the diagnostic is optional */
+      }
+    }
+
+    var formId = formIdFrom(payload);
+
+    if (formId) {
+      if (eventName === 'onFormSubmit') {
+        submitSeenByFormId[formId] = true;
+      } else if (Object.prototype.hasOwnProperty.call(submitSeenByFormId, formId)) {
+        // The 'onFormSubmit' half of this submission already reported it, and
+        // already ran (or was suppressed by) the conversion path.
+        return;
+      }
+    }
+
     var formLocation = roleFor(formId);
 
     // Always emitted, never deduped — site analytics only.

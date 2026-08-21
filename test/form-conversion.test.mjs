@@ -101,6 +101,16 @@ const submitted = (id, origin = HS_ORIGIN) => ({
   data: { type: 'hsFormCallback', eventName: 'onFormSubmitted', id },
 });
 
+/**
+ * The pre-submit callback. This is the only one a redirect-configured form
+ * delivers: the page navigates to the HubSpot meetings booking URL before
+ * 'onFormSubmitted' can arrive.
+ */
+const submitting = (id, origin = HS_ORIGIN) => ({
+  origin,
+  data: { type: 'hsFormCallback', eventName: 'onFormSubmit', id },
+});
+
 // --- form role labelling ----------------------------------------------------
 
 test('labels the exit-intent modal form', () => {
@@ -278,11 +288,24 @@ test('ignores a lookalike origin such as hsforms.com.evil.com', () => {
 
 // --- message filtering ------------------------------------------------------
 
-test('the pre-submit onFormSubmit event does not convert', () => {
+test('the pre-submit onFormSubmit event converts', () => {
+  // It has to: a redirect-configured form never delivers anything else, and the
+  // navigation destroys the page before 'onFormSubmitted' could arrive.
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire(submitting('b72aaabd'));
+  assert.equal(env.conversions().length, 1);
+  assert.equal(env.conversions()[0].form_location, 'exit_intent');
+});
+
+test('an unrelated hsFormCallback event name still does not convert', () => {
   const env = makeEnv({ b72aaabd: 'exit_intent' });
   env.fire({
     origin: HS_ORIGIN,
-    data: { type: 'hsFormCallback', eventName: 'onFormSubmit', id: 'b72aaabd' },
+    data: { type: 'hsFormCallback', eventName: 'onFormReady', id: 'b72aaabd' },
+  });
+  env.fire({
+    origin: HS_ORIGIN,
+    data: { type: 'hsFormCallback', eventName: 'onFormDefinitionFetchSuccess', id: 'b72aaabd' },
   });
   assert.equal(env.win.dataLayer, undefined);
 });
@@ -310,4 +333,95 @@ test('appends to an existing dataLayer rather than replacing it', () => {
   env.fire(submitted('b72aaabd'));
   assert.equal(env.win.dataLayer[0].event, 'gtm.js');
   assert.equal(env.conversions().length, 1);
+});
+
+// --- redirect vs inline form configurations ---------------------------------
+
+test('a redirect form, which only ever posts onFormSubmit, converts once', () => {
+  const env = makeEnv({ '752783ec': 'main' });
+  env.fire(submitting('752783ec'));
+  assert.equal(env.conversions().length, 1);
+  assert.equal(env.conversions()[0].form_location, 'main');
+  assert.equal(env.submits().length, 1);
+});
+
+test('an inline form, which posts both callbacks, converts once', () => {
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire(submitting('b72aaabd'));
+  env.fire(submitted('b72aaabd'));
+  assert.equal(env.conversions().length, 1);
+});
+
+test('an inline form reports ONE submission on the analytics event, not two', () => {
+  // kudos_form_submit is deliberately not deduped per person, so without the
+  // submit -> submitted suppression an inline form would report two submissions
+  // for one fill while a redirect form reports one, and the two configurations
+  // would not be comparable.
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire(submitting('b72aaabd'));
+  env.fire(submitted('b72aaabd'));
+  assert.equal(env.submits().length, 1);
+});
+
+test('suppression is per form, so a second form still reports its submission', () => {
+  const env = makeEnv({ '752783ec': 'main', b72aaabd: 'exit_intent' });
+  env.fire(submitting('752783ec'));
+  env.fire(submitted('752783ec'));
+  env.fire(submitting('b72aaabd'));
+  assert.deepEqual(env.submits().map(e => e.form_location), ['main', 'exit_intent']);
+  assert.equal(env.conversions().length, 1, 'still one person, one conversion');
+});
+
+test('a form posting only onFormSubmitted is unaffected by the suppression', () => {
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire(submitted('b72aaabd'));
+  assert.equal(env.submits().length, 1);
+  assert.equal(env.conversions().length, 1);
+});
+
+test('two attempts at the same form report two submissions', () => {
+  // A validation or reCAPTCHA rejection followed by a successful retry: both
+  // attempts post onFormSubmit. Counting attempts is the accepted cost of firing
+  // pre-submit; what must not happen is the retry going unreported.
+  const env = makeEnv({ '752783ec': 'main' });
+  env.fire(submitting('752783ec'));
+  env.fire(submitting('752783ec'));
+  assert.equal(env.submits().length, 2);
+  assert.equal(env.conversions().length, 1);
+});
+
+// --- form id extraction -----------------------------------------------------
+
+test('reads the form id from data.formGuid when there is no top-level id', () => {
+  const env = makeEnv({ b72aaabd: 'exit_intent' });
+  env.fire({
+    origin: HS_ORIGIN,
+    data: { type: 'hsFormCallback', eventName: 'onFormSubmit', data: { formGuid: 'b72aaabd' } },
+  });
+  assert.equal(env.conversions()[0].form_location, 'exit_intent');
+});
+
+test('an onFormSubmit payload whose data is a field-value array still labels', () => {
+  // The pre-submit callback carries the submitted fields as an array rather than
+  // the object 'onFormSubmitted' uses. The top-level id has to carry the label.
+  const env = makeEnv({ '752783ec': 'main' });
+  env.fire({
+    origin: HS_ORIGIN,
+    data: {
+      type: 'hsFormCallback',
+      eventName: 'onFormSubmit',
+      id: '752783ec',
+      data: [{ name: 'email', value: 'a@b.com' }],
+    },
+  });
+  assert.equal(env.conversions()[0].form_location, 'main');
+  assert.equal(env.conversions()[0].hubspot_form_id, '752783ec');
+});
+
+test('an onFormSubmit payload with no recoverable form id still converts', () => {
+  // The degradation the segment split accepts: conversion fires, label is lost.
+  const env = makeEnv({ '752783ec': 'main' });
+  env.fire({ origin: HS_ORIGIN, data: { type: 'hsFormCallback', eventName: 'onFormSubmit' } });
+  assert.equal(env.conversions().length, 1);
+  assert.equal(env.conversions()[0].form_location, 'unknown');
 });
