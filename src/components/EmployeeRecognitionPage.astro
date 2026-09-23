@@ -4,9 +4,10 @@ import '../styles/global.css';
 interface Props {
   isThankYou?: boolean;
   mainFormId?: string;
+  hideHeaderActions?: boolean;
 }
 
-const { isThankYou = false, mainFormId = '752783ec-f67e-493a-8251-642812d70938' } = Astro.props;
+const { isThankYou = false, mainFormId = '752783ec-f67e-493a-8251-642812d70938', hideHeaderActions = false } = Astro.props;
 const currentYear = new Date().getFullYear();
 const thankYouLogoHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-logo&utm_campaign=employee-recognition&utm_content=header-logo';
 const thankYouCtaHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-cta&utm_campaign=employee-recognition&utm_content=hero-cta';
@@ -63,10 +64,12 @@ const legalLinks = {
       <a href={isThankYou ? thankYouLogoHref : 'https://www.kudos.com'} class="logo" aria-label="Kudos home">
         <img src="/images/kudos-logo.svg" alt="Kudos">
       </a>
-      <div class="nav-actions">
-        <a href="https://support.kudosnow.com/hc/en-us" class="nav-support">Support</a>
-        <a href="https://give.kudosnow.com/" class="nav-login">Existing Client Login</a>
-      </div>
+      {!hideHeaderActions && (
+        <div class="nav-actions">
+          <a href="https://support.kudosnow.com/hc/en-us" class="nav-support">Support</a>
+          <a href="https://give.kudosnow.com/" class="nav-login">Existing Client Login</a>
+        </div>
+      )}
     </div>
   </nav>
 
