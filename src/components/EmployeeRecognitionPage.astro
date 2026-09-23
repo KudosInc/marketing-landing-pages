@@ -3,9 +3,10 @@ import '../styles/global.css';
 
 interface Props {
   isThankYou?: boolean;
+  mainFormId?: string;
 }
 
-const { isThankYou = false } = Astro.props;
+const { isThankYou = false, mainFormId = '752783ec-f67e-493a-8251-642812d70938' } = Astro.props;
 const currentYear = new Date().getFullYear();
 const thankYouLogoHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-logo&utm_campaign=employee-recognition&utm_content=header-logo';
 const thankYouCtaHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-cta&utm_campaign=employee-recognition&utm_content=hero-cta';
@@ -130,7 +131,7 @@ const legalLinks = {
         <div class="form-card" id="top-form">
           <h2 class="form-card-title">Schedule a 30-minute call</h2>
           <div class="hubspot-form hubspot-form-hero">
-            <div class="hs-form-frame" data-form-role="main" data-region="na1" data-form-id="752783ec-f67e-493a-8251-642812d70938" data-portal-id="21201461"></div>
+            <div class="hs-form-frame" data-form-role="main" data-region="na1" data-form-id={mainFormId} data-portal-id="21201461"></div>
           </div>
         </div>
       )}
