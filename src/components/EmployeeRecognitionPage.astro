@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import MobileFormCta from './MobileFormCta.astro';
 
 interface Props {
   isThankYou?: boolean;
@@ -66,8 +67,8 @@ const legalLinks = {
       </a>
       {!hideHeaderActions && (
         <div class="nav-actions">
-          <a href="https://support.kudosnow.com/hc/en-us" class="nav-support">Support</a>
-          <a href="https://give.kudosnow.com/" class="nav-login">Existing Client Login</a>
+          <a href="https://support.kudosnow.com/hc/en-us" class="nav-text-link">Support</a>
+          <a href="https://give.kudosnow.com/" class="nav-text-link">Existing Client Login</a>
         </div>
       )}
     </div>
@@ -99,6 +100,7 @@ const legalLinks = {
             >
               Kudos® is the recognition and rewards platform designed to fit your unique workplace culture.
             </p>
+            <MobileFormCta />
             <p class="hero-list-label">With Kudos you'll:</p>
             <ul class="hero-list">
               <li>Increase employee engagement</li>
@@ -106,9 +108,6 @@ const legalLinks = {
               <li>Save time and money</li>
               <li>Improve productivity</li>
             </ul>
-            <div class="hero-secondary-actions">
-              <p class="hero-pricing-note">Looking for pricing for your organization? <a href="https://kudos.com/request-pricing">Get pricing here</a></p>
-            </div>
             <div class="hero-locale-badge" id="hero-locale-badge-wrap">
               <img
                 src="/images/leader-mm.svg"
@@ -227,18 +226,17 @@ const legalLinks = {
       <div class="metrics-grid">
         <article class="metric-card">
           <p class="metric-value">93%+</p>
-          <p class="metric-label">User participation<span class="metric-asterisk">*</span></p>
+          <p class="metric-label">User participation</p>
         </article>
         <article class="metric-card">
           <p class="metric-value">17.8%</p>
-          <p class="metric-label">Yearly improvement in turnover<span class="metric-asterisk">*</span></p>
+          <p class="metric-label">Yearly improvement in turnover</p>
         </article>
         <article class="metric-card">
           <p class="metric-value">18.8%</p>
-          <p class="metric-label">Improvement in engagement scores<span class="metric-asterisk">*</span></p>
+          <p class="metric-label">Improvement in engagement scores</p>
         </article>
       </div>
-      <p class="metrics-footnote">* Results seen from organizations that follow Kudos' recommended best practices.</p>
     </div>
   </section>
 
@@ -620,6 +618,7 @@ const legalLinks = {
     </div>
   </footer>
 
+  {!isThankYou && <MobileFormCta sticky />}
   {!isThankYou && <script src="https://js.hsforms.net/forms/embed/21201461.js" defer></script>}
   {!isThankYou && <script src="/scripts/form-conversion.js" defer></script>}
   <script>
