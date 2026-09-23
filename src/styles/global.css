@@ -219,6 +219,36 @@ input, select, button {
   margin-bottom: 20px;
 }
 
+.hero-thank-you {
+  padding: 9rem 0 7.5rem;
+}
+
+.hero-thank-you .container {
+  justify-content: center;
+}
+
+.hero-thank-you .hero-content {
+  flex: 0 1 auto;
+  align-items: center;
+  padding-right: 0;
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+  top: 0;
+}
+
+.hero-thank-you .hero-title {
+  margin-bottom: 0;
+}
+
+.hero-thank-you .hero-subtitle {
+  margin: 1.25em 0 0;
+}
+
+.hero-thank-you .btn-cta {
+  margin-top: 1.5rem;
+}
+
 .hero-list-label {
   font-size: 1em;
   font-weight: 600;
@@ -1784,6 +1814,10 @@ input, select, button {
   .hero {
     background-image: url('/images/hero-bg-mobile.webp');
     background-position: center top;
+  }
+
+  .hero-thank-you {
+    padding: 6.5rem 0 5.5rem;
   }
 
   .hero-locale-badge {

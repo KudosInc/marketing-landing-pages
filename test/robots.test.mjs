@@ -146,12 +146,23 @@ test('organic search crawlers are kept off the paid pages', () => {
   }
 });
 
+test('search crawlers can read the thank-you page noindex rule', () => {
+  for (const ua of ['Googlebot', 'bingbot', 'DuckDuckBot']) {
+    for (const url of [`${BASE}/thank-you`, `${BASE}/thank-you/`]) {
+      assert.equal(canFetch(groups, ua, url), true,
+        `${ua} must fetch ${url} to see its noindex meta tag`);
+    }
+  }
+});
+
 test('AI training and AI search crawlers are kept out', () => {
   // Deliberate: these thin single-CTA pages should not represent the brand in
   // ChatGPT answers, and www.kudos.com is the organic surface.
   for (const ua of ['GPTBot', 'OAI-SearchBot/1.0', 'CCBot', 'ClaudeBot']) {
     assert.equal(canFetch(groups, ua, `${BASE}/employee-recognition`), false,
       `${ua} should be blocked`);
+    assert.equal(canFetch(groups, ua, `${BASE}/thank-you/`), false,
+      `${ua} should still be blocked from the thank-you page`);
   }
 });
 
