@@ -1,11 +1,14 @@
 ---
 import '../styles/global.css';
+import MobileFormCta from './MobileFormCta.astro';
 
 interface Props {
   isThankYou?: boolean;
+  mainFormId?: string;
+  hideHeaderActions?: boolean;
 }
 
-const { isThankYou = false } = Astro.props;
+const { isThankYou = false, mainFormId = '752783ec-f67e-493a-8251-642812d70938', hideHeaderActions = false } = Astro.props;
 const currentYear = new Date().getFullYear();
 const thankYouLogoHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-logo&utm_campaign=employee-recognition&utm_content=header-logo';
 const thankYouCtaHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-cta&utm_campaign=employee-recognition&utm_content=hero-cta';
@@ -62,10 +65,12 @@ const legalLinks = {
       <a href={isThankYou ? thankYouLogoHref : 'https://www.kudos.com'} class="logo" aria-label="Kudos home">
         <img src="/images/kudos-logo.svg" alt="Kudos">
       </a>
-      <div class="nav-actions">
-        <a href="https://support.kudosnow.com/hc/en-us" class="nav-support">Support</a>
-        <a href="https://give.kudosnow.com/" class="nav-login">Existing Client Login</a>
-      </div>
+      {!hideHeaderActions && (
+        <div class="nav-actions">
+          <a href="https://support.kudosnow.com/hc/en-us" class="nav-text-link">Support</a>
+          <a href="https://give.kudosnow.com/" class="nav-text-link">Existing Client Login</a>
+        </div>
+      )}
     </div>
   </nav>
 
@@ -95,6 +100,7 @@ const legalLinks = {
             >
               Kudos® is the recognition and rewards platform designed to fit your unique workplace culture.
             </p>
+            <MobileFormCta />
             <p class="hero-list-label">With Kudos you'll:</p>
             <ul class="hero-list">
               <li>Increase employee engagement</li>
@@ -102,9 +108,6 @@ const legalLinks = {
               <li>Save time and money</li>
               <li>Improve productivity</li>
             </ul>
-            <div class="hero-secondary-actions">
-              <p class="hero-pricing-note">Looking for pricing for your organization? <a href="https://kudos.com/request-pricing">Get pricing here</a></p>
-            </div>
             <div class="hero-locale-badge" id="hero-locale-badge-wrap">
               <img
                 src="/images/leader-mm.svg"
@@ -130,7 +133,7 @@ const legalLinks = {
         <div class="form-card" id="top-form">
           <h2 class="form-card-title">Schedule a 30-minute call</h2>
           <div class="hubspot-form hubspot-form-hero">
-            <div class="hs-form-frame" data-form-role="main" data-region="na1" data-form-id="752783ec-f67e-493a-8251-642812d70938" data-portal-id="21201461"></div>
+            <div class="hs-form-frame" data-form-role="main" data-region="na1" data-form-id={mainFormId} data-portal-id="21201461"></div>
           </div>
         </div>
       )}
@@ -223,18 +226,17 @@ const legalLinks = {
       <div class="metrics-grid">
         <article class="metric-card">
           <p class="metric-value">93%+</p>
-          <p class="metric-label">User participation<span class="metric-asterisk">*</span></p>
+          <p class="metric-label">User participation</p>
         </article>
         <article class="metric-card">
           <p class="metric-value">17.8%</p>
-          <p class="metric-label">Yearly improvement in turnover<span class="metric-asterisk">*</span></p>
+          <p class="metric-label">Yearly improvement in turnover</p>
         </article>
         <article class="metric-card">
           <p class="metric-value">18.8%</p>
-          <p class="metric-label">Improvement in engagement scores<span class="metric-asterisk">*</span></p>
+          <p class="metric-label">Improvement in engagement scores</p>
         </article>
       </div>
-      <p class="metrics-footnote">* Results seen from organizations that follow Kudos' recommended best practices.</p>
     </div>
   </section>
 
@@ -616,6 +618,7 @@ const legalLinks = {
     </div>
   </footer>
 
+  {!isThankYou && <MobileFormCta sticky />}
   {!isThankYou && <script src="https://js.hsforms.net/forms/embed/21201461.js" defer></script>}
   {!isThankYou && <script src="/scripts/form-conversion.js" defer></script>}
   <script>

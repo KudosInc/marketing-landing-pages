@@ -1,0 +1,18 @@
+---
+interface Props {
+  sticky?: boolean;
+}
+
+const { sticky = false } = Astro.props;
+---
+
+{sticky ? (
+  <>
+    <div class="mobile-form-sticky" data-mobile-form-sticky>
+      <a href="#top-form" class="btn-cta">Book a 30-minute call</a>
+    </div>
+    <script src="/scripts/mobile-form-cta.js" defer></script>
+  </>
+) : (
+  <a href="#top-form" class="btn-cta mobile-hero-cta" data-mobile-form-cta>Book a 30-minute call</a>
+)}
