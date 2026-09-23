@@ -27,7 +27,21 @@ Allow: /
 User-agent: adidxbot
 Allow: /
 
-# Everything else — organic search, AI training, and general crawlers.
+# Search crawlers may fetch only the thank-you page so they can read its
+# noindex meta tag. The paid landing pages stay blocked from organic crawling.
+User-agent: Googlebot
+Allow: /thank-you
+Disallow: /
+
+User-agent: bingbot
+Allow: /thank-you
+Disallow: /
+
+User-agent: DuckDuckBot
+Allow: /thank-you
+Disallow: /
+
+# Everything else — AI training, AI search, and general crawlers.
 # Note this still blocks OAI-SearchBot and GPTBot, which is deliberate: paid
 # landing pages should not represent the brand in ChatGPT search results.
 User-agent: *
