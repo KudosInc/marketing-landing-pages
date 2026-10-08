@@ -478,6 +478,32 @@ input, select, button {
   opacity: 1;
 }
 
+.healthcare-logos-row {
+  gap: 25px;
+}
+
+.healthcare-logos-row .logo-item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.healthcare-logos-row .logo-item img {
+  height: 56px;
+  max-height: none;
+}
+
+.healthcare-logos-row .healthcare-logo-compact img {
+  height: 40px;
+}
+
+.healthcare-logos-row .healthcare-logo-neo {
+  flex: 0 0 145px;
+}
+
+.healthcare-logos-row .healthcare-logo-neo img:hover {
+  filter: grayscale(100%);
+}
+
 @keyframes logos-marquee {
   from {
     transform: translate3d(0, 0, 0);
@@ -543,6 +569,13 @@ input, select, button {
   margin-bottom: 0;
 }
 
+.metrics-caption {
+  text-align: center;
+  color: #5f6b7a;
+  font-size: 0.9em;
+  margin: 20px 0 0;
+}
+
 /* ===== FEATURES INTRO ===== */
 .features-intro {
   background: #fff;
@@ -595,6 +628,25 @@ input, select, button {
 .feature-image img {
   border-radius: 12px;
   width: 100%;
+}
+
+.healthcare-security-badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 22px 30px;
+  width: 100%;
+  padding: 34px;
+  border-radius: 18px;
+  background: var(--slate);
+}
+
+.healthcare-security-badges img {
+  width: 100%;
+  height: 105px;
+  object-fit: contain;
+  border-radius: 0;
 }
 
 .feature-text {
@@ -1619,6 +1671,11 @@ input, select, button {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 991px) {
+  .healthcare-security-badges {
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
   .hero .container {
     flex-direction: column;
   }
@@ -1717,10 +1774,15 @@ input, select, button {
 
   .integrations-content,
   .integrations-visual {
-    flex: 1;
+    flex: none;
+  }
+
+  .integrations-content {
+    width: 100%;
   }
 
   .integrations-visual {
+    width: min(100%, 300px);
     margin-top: 8px;
   }
 
@@ -1845,9 +1907,20 @@ input, select, button {
     flex: 0 0 auto;
   }
 
-  .integrations-section,
-  .integrations-visual {
+  .healthcare-logos-row.is-mobile-carousel .logo-item {
+    width: clamp(145px, 42vw, 180px);
+  }
+
+  .healthcare-logos-row.is-mobile-carousel .healthcare-logo-neo {
+    width: 145px;
+  }
+
+  .integrations-section {
     overflow-x: clip;
+  }
+
+  .integrations-visual {
+    width: min(100%, 280px);
   }
 
   .orbit-system {

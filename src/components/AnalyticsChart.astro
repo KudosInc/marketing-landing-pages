@@ -1,0 +1,204 @@
+---
+interface Props { healthcare?: boolean }
+const { healthcare = false } = Astro.props;
+---
+
+        <div class="analytics-composite-visual" role="img" aria-label={healthcare ? "Illustrative chart from Q1 2025 to Q4 2026 showing Happiness, Innovation, and Safety, with a Safety rise after a huddle rollout and a Happiness drop during a unit staffing shortage" : "Multi-line chart from Q1 2025 to Q4 2026 showing Happiness, Innovation, and Safety, with one red oddity point on Happiness"}>
+          <svg class="analytics-line-svg" viewBox="0 0 640 420" aria-hidden="true">
+            <g class="chart-legend">
+              <line class="legend-line happiness-line" x1="410" y1="44" x2="444" y2="44"></line>
+              <text x="452" y="48">Happiness</text>
+              <line class="legend-line innovation-line" x1="410" y1="64" x2="444" y2="64"></line>
+              <text x="452" y="68">Innovation</text>
+              <line class="legend-line safety-line" x1="410" y1="84" x2="444" y2="84"></line>
+              <text x="452" y="88">Safety</text>
+            </g>
+            <g class="reach-grid">
+              <line x1="66" y1="96" x2="586" y2="96"></line>
+              <line x1="66" y1="121" x2="586" y2="121"></line>
+              <line x1="66" y1="146" x2="586" y2="146"></line>
+              <line x1="66" y1="171" x2="586" y2="171"></line>
+              <line x1="66" y1="196" x2="586" y2="196"></line>
+              <line x1="66" y1="221" x2="586" y2="221"></line>
+              <line x1="66" y1="246" x2="586" y2="246"></line>
+              <line x1="66" y1="271" x2="586" y2="271"></line>
+              <line x1="66" y1="296" x2="586" y2="296"></line>
+              <line x1="66" y1="321" x2="586" y2="321"></line>
+            </g>
+            <g class="reach-y-axis-labels">
+              <text x="54" y="100">500</text>
+              <text x="54" y="125">450</text>
+              <text x="54" y="150">400</text>
+              <text x="54" y="175">350</text>
+              <text x="54" y="200">300</text>
+              <text x="54" y="225">250</text>
+              <text x="54" y="250">200</text>
+              <text x="54" y="275">150</text>
+              <text x="54" y="300">100</text>
+              <text x="54" y="325">50</text>
+            </g>
+            <line class="reach-axis" x1="66" y1="334" x2="586" y2="334"></line>
+            <line class="reach-axis" x1="66" y1="80" x2="66" y2="334"></line>
+            <path class="reach-line happiness-line" d="M94 176 C130 176 130 168 166 168 C202 168 202 165 238 165 C274 165 274 172 310 172 C346 172 346 281 382 281 C418 281 418 226 454 226 C490 226 490 212 526 212 C548 212 548 198 570 198"></path>
+            <path class="reach-line innovation-line" d="M94 246 C130 246 130 235 166 235 C202 235 202 229 238 229 C274 229 274 232 310 232 C346 232 346 228 382 228 C418 228 418 212 454 212 C490 212 490 223 526 223 C548 223 548 220 570 220"></path>
+            <path class="reach-line safety-line" d="M94 206 C130 206 130 141 166 141 C202 141 202 201 238 201 C274 201 274 199 310 199 C346 199 346 197 382 197 C418 197 418 193 454 193 C490 193 490 190 526 190 C548 190 548 186 570 186"></path>
+
+            <g class="line-point happiness-point" transform="translate(94 176)">
+              <title>Happiness Q1: 340</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point" transform="translate(166 168)">
+              <title>Happiness Q2: 355</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point" transform="translate(238 165)">
+              <title>Happiness Q3: 362</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point" transform="translate(310 172)">
+              <title>Happiness Q4: 348</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point anomaly-point" transform="translate(382 281)">
+              <title>Happiness Q1: 130</title>
+              <circle class="anomaly-indicator-ring" cx="0" cy="0" r="10"></circle>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point" transform="translate(454 226)">
+              <title>Happiness Q2: 240</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point" transform="translate(526 212)">
+              <title>Happiness Q3: 268</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point happiness-point" transform="translate(570 198)">
+              <title>Happiness Q4: 295</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+
+            <g class="line-point innovation-point" transform="translate(94 246)">
+              <title>Innovation Q1: 200</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(166 235)">
+              <title>Innovation Q2: 222</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(238 229)">
+              <title>Innovation Q3: 234</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(310 232)">
+              <title>Innovation Q4: 228</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(382 228)">
+              <title>Innovation Q1: 236</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(454 212)">
+              <title>Innovation Q2: 268</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(526 223)">
+              <title>Innovation Q3: 246</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point innovation-point" transform="translate(570 220)">
+              <title>Innovation Q4: 252</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+
+            <g class="line-point safety-point" transform="translate(94 206)">
+              <title>Safety Q1: 280</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point event-point" transform="translate(166 141)">
+              <title>Safety Q2: 410</title>
+              <circle class="event-indicator-ring" cx="0" cy="0" r="10"></circle>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point" transform="translate(238 201)">
+              <title>Safety Q3: 290</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point" transform="translate(310 199)">
+              <title>Safety Q4: 294</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point" transform="translate(382 197)">
+              <title>Safety Q1: 298</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point" transform="translate(454 193)">
+              <title>Safety Q2: 306</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point" transform="translate(526 190)">
+              <title>Safety Q3: 312</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+            <g class="line-point safety-point" transform="translate(570 186)">
+              <title>Safety Q4: 320</title>
+              <circle class="point-pulse" cx="0" cy="0" r="11"></circle>
+              <circle class="point-dot" cx="0" cy="0" r="5"></circle>
+            </g>
+
+            <g class="chart-callout event-callout" aria-hidden="true">
+              <line class="callout-stem" x1="174" y1="133" x2="232" y2="100"></line>
+              <g class="callout-pill" transform="translate(234 85)">
+                <rect x="0" y="0" width="148" height="28" rx="14" ry="14"></rect>
+                <circle cx="14" cy="14" r="4"></circle>
+                <text x="24" y="18">{healthcare ? "Safety Huddle Rollout" : "Safety Training Event"}</text>
+              </g>
+            </g>
+
+            <g class="chart-callout anomaly-callout" aria-hidden="true">
+              <line class="callout-stem" x1="390" y1="273" x2={healthcare ? "406" : "444"} y2="245"></line>
+              <g class="callout-pill" transform={healthcare ? "translate(408 231)" : "translate(446 231)"}>
+                <rect x="0" y="0" width={healthcare ? "176" : "138"} height="28" rx="14" ry="14"></rect>
+                <circle cx="14" cy="14" r="4"></circle>
+                <text x="24" y="18">{healthcare ? "Unit Staffing Shortage" : "Benefits Plan Change"}</text>
+              </g>
+            </g>
+
+            <g class="reach-x-axis-labels">
+              <text x="94" y="356">Q1</text>
+              <text x="166" y="356">Q2</text>
+              <text x="238" y="356">Q3</text>
+              <text x="310" y="356">Q4</text>
+              <text x="382" y="356">Q1</text>
+              <text x="454" y="356">Q2</text>
+              <text x="526" y="356">Q3</text>
+              <text x="570" y="356">Q4</text>
+            </g>
+            <g class="reach-year-labels">
+              <text x="202" y="377">2025</text>
+              <text x="483" y="377">2026</text>
+            </g>
+          </svg>
+        </div>
