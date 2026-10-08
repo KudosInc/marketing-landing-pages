@@ -14,6 +14,10 @@
 User-agent: OAI-AdsBot
 Allow: /
 
+# Recommended by OpenAI alongside OAI-AdsBot for ad landing-page access.
+User-agent: OAI-SearchBot
+Allow: /
+
 # Google Ads landing-page review. AdsBot-Google ignores "User-agent: *" by
 # design, so it was never blocked — listed explicitly so that stays true if
 # the wildcard rule below is ever edited.
@@ -41,8 +45,6 @@ User-agent: DuckDuckBot
 Allow: /thank-you
 Disallow: /
 
-# Everything else — AI training, AI search, and general crawlers.
-# Note this still blocks OAI-SearchBot and GPTBot, which is deliberate: paid
-# landing pages should not represent the brand in ChatGPT search results.
+# Everything else — AI training and general crawlers.
 User-agent: *
 Disallow: /

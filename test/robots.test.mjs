@@ -114,7 +114,7 @@ test('every user-agent value is a bare product token', () => {
 
 // --- ad-network crawlers must be able to fetch -------------------------------
 
-const AD_CRAWLERS = ['OAI-AdsBot/1.0', 'AdsBot-Google', 'AdsBot-Google-Mobile', 'adidxbot'];
+const AD_CRAWLERS = ['OAI-AdsBot/1.0', 'OAI-SearchBot/1.0', 'AdsBot-Google', 'AdsBot-Google-Mobile', 'adidxbot'];
 
 for (const ua of AD_CRAWLERS) {
   test(`${ua} may fetch landing pages`, () => {
@@ -125,6 +125,8 @@ for (const ua of AD_CRAWLERS) {
       // Ad landing pages are reached with tracking parameters attached.
       `${BASE}/employee-recognition?utm_source=chatgpt&utm_medium=paid`,
       `${BASE}/employee-recognition?gclid=abc123`,
+      `${BASE}/OA/employee-recognition?locale=ca&utm_source=chatgpt&oppref=abc123`,
+      `${BASE}/OA/healthcare-recognition?utm_source=chatgpt&oppref=abc123`,
     ]) {
       assert.equal(canFetch(groups, ua, url), true, `${ua} must be allowed to fetch ${url}`);
     }
@@ -135,6 +137,10 @@ test('OAI-AdsBot has its own named group, not just an effective allow', () => {
   // Guards against the group being deleted while some broader rule happens to
   // permit it: OpenAI's crawler needs an explicit, durable exemption.
   assert.ok(groups.has('oai-adsbot'), 'expected a named OAI-AdsBot group');
+});
+
+test('OAI-SearchBot has its own named allow group', () => {
+  assert.ok(groups.has('oai-searchbot'), 'expected a named OAI-SearchBot group');
 });
 
 // --- everything else stays out ----------------------------------------------
@@ -155,10 +161,10 @@ test('search crawlers can read the thank-you page noindex rule', () => {
   }
 });
 
-test('AI training and AI search crawlers are kept out', () => {
+test('AI training and other crawlers are kept out', () => {
   // Deliberate: these thin single-CTA pages should not represent the brand in
   // ChatGPT answers, and www.kudos.com is the organic surface.
-  for (const ua of ['GPTBot', 'OAI-SearchBot/1.0', 'CCBot', 'ClaudeBot']) {
+  for (const ua of ['GPTBot', 'CCBot', 'ClaudeBot']) {
     assert.equal(canFetch(groups, ua, `${BASE}/employee-recognition`), false,
       `${ua} should be blocked`);
     assert.equal(canFetch(groups, ua, `${BASE}/thank-you/`), false,

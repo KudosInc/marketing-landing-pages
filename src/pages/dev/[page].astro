@@ -1,0 +1,41 @@
+---
+// A dynamic route with no production paths keeps this index out of the static deployment.
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { page: 'pages' } }] : [];
+}
+
+const pages = Object.keys(import.meta.glob('/src/pages/**/*.astro'))
+  .filter((file) => !file.includes('/dev/'))
+  .map((file) => {
+    const route = file.replace('/src/pages', '').replace(/\.astro$/, '').replace(/\/index$/, '');
+    return {
+      href: route ? `${route}/` : '/',
+      label: route || '/',
+    };
+  })
+  .sort((a, b) => a.href.localeCompare(b.href));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Local page index</title>
+    <style>
+      body { max-width: 48rem; margin: 3rem auto; padding: 0 1.5rem; font: 1rem/1.5 system-ui, sans-serif; }
+      ul { padding-left: 1.5rem; }
+      li { margin: 0.4rem 0; }
+      a { color: #2847a1; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Local page index</h1>
+      <p>Landing pages available in this development server:</p>
+      <ul>
+        {pages.map(({ href, label }) => <li><a href={href}>{label}</a></li>)}
+      </ul>
+    </main>
+  </body>
+</html>
