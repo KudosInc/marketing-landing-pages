@@ -3,6 +3,7 @@ import '../styles/global.css';
 import MobileFormCta from './MobileFormCta.astro';
 import AnalyticsChart from './AnalyticsChart.astro';
 import IntegrationsSection from './IntegrationsSection.astro';
+import HeroG2Badges from './HeroG2Badges.astro';
 
 interface Props {
   isThankYou?: boolean;
@@ -103,8 +104,8 @@ const legalLinks = {
             <h1 class="hero-title">Recognition That Reaches Every Shift</h1>
             <p class="hero-subtitle">Kudos® helps hospitals and health systems recognize nurses, clinicians and support staff where they work, so great care gets noticed and your people stay.</p>
             <MobileFormCta />
-            <p class="hero-list-label">With Kudos you'll:</p>
-            <ul class="hero-list">
+            <p class="hero-list-label hero-list-label--benefits">With Kudos you'll:</p>
+            <ul class="hero-list hero-list--benefits">
               <li>Recognize nurses and frontline staff on every shift and unit</li>
               <li>Reduce turnover with recognition tied to your values</li>
               <li>Run awards, milestones and rewards from one platform</li>
@@ -124,30 +125,14 @@ const legalLinks = {
               Kudos® is the recognition and rewards platform designed to fit your unique workplace culture.
             </p>
             <MobileFormCta />
-            <p class="hero-list-label">With Kudos you'll:</p>
-            <ul class="hero-list">
+            <p class="hero-list-label hero-list-label--benefits">With Kudos you'll:</p>
+            <ul class="hero-list hero-list--benefits">
               <li>Increase employee engagement</li>
               <li>Reduce turnover</li>
               <li>Save time and money</li>
-              <li>Improve productivity</li>
+              <li>Improve organizational productivity</li>
             </ul>
-            <div class="hero-locale-badge" id="hero-locale-badge-wrap">
-              <img
-                src="/images/leader-mm.svg"
-                alt="Leader Momentum Matrix badge"
-                loading="lazy"
-              />
-              <img
-                id="hero-locale-badge"
-                src="/images/best-usability.svg"
-                data-default-src="/images/best-usability.svg"
-                data-ca-src="/images/top-50-cad.svg"
-                data-default-alt="Best Usability badge"
-                data-ca-alt="Top 50 Canada badge"
-                alt="Best Usability badge"
-                loading="lazy"
-              />
-            </div>
+            <HeroG2Badges />
           </>
         )}
       </div>
