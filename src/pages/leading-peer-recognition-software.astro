@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import MobileFormCta from '../components/MobileFormCta.astro';
+import HeroG2Badges from '../components/HeroG2Badges.astro';
 
 const currentYear = new Date().getFullYear();
 const legalLinks = {
@@ -68,30 +69,14 @@ const legalLinks = {
           Kudos® is the peer-to-peer recognition software designed to fit your unique workplace culture.
         </p>
         <MobileFormCta />
-        <p class="hero-list-label">With Kudos you'll:</p>
-        <ul class="hero-list">
+        <p class="hero-list-label hero-list-label--benefits">With Kudos you'll:</p>
+        <ul class="hero-list hero-list--benefits">
           <li>Increase employee engagement</li>
           <li>Reduce turnover</li>
           <li>Save time and money</li>
-          <li>Improve productivity</li>
+          <li>Improve organizational productivity</li>
         </ul>
-        <div class="hero-locale-badge" id="hero-locale-badge-wrap">
-          <img
-            src="/images/leader-mm.svg"
-            alt="Leader Momentum Matrix badge"
-            loading="lazy"
-          />
-          <img
-            id="hero-locale-badge"
-            src="/images/best-usability.svg"
-            data-default-src="/images/best-usability.svg"
-            data-ca-src="/images/top-50-cad.svg"
-            data-default-alt="Best Usability badge"
-            data-ca-alt="Top 50 Canada badge"
-            alt="Best Usability badge"
-            loading="lazy"
-          />
-        </div>
+        <HeroG2Badges />
       </div>
 
       <div class="form-card" id="top-form">

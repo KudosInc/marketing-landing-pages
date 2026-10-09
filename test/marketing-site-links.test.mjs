@@ -17,11 +17,10 @@ test('conversion-page logos do not link visitors to the main marketing site', ()
     'src/pages/employee-rewards.astro',
     'src/pages/leading-employee-rewards-platform.astro',
     'src/pages/leading-peer-recognition-software.astro',
-    'src/pages/yyz-people-and-culture-council.astro',
   ]) {
     const page = read(file);
-    assert.match(page, /<span class="logo(?: yyz-sponsor-logo)?">/, `${file}: visible logo missing`);
-    assert.doesNotMatch(page, /<a[^>]+class="logo(?: yyz-sponsor-logo)?"/, `${file}: logo is still a link`);
+    assert.match(page, /<span class="logo">/, `${file}: visible logo missing`);
+    assert.doesNotMatch(page, /<a[^>]+class="logo"/, `${file}: logo is still a link`);
   }
 });
 

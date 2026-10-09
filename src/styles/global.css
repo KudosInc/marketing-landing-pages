@@ -252,6 +252,49 @@ input, select, button {
   color: var(--grey-background);
 }
 
+.hero-list-label--benefits,
+.hero-list--benefits {
+  font-size: 1.25em;
+}
+
+.hero-list-label--benefits {
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.hero-list--benefits {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 12px;
+  line-height: 1.5;
+}
+
+.hero-list--benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.hero-list--benefits li::before {
+  content: '✓';
+  position: static;
+  display: grid;
+  place-items: center;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  border: 1.5px solid var(--coral);
+  border-radius: 50%;
+  color: var(--coral);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .hero-secondary-actions {
   margin-top: 1.6em;
 }
@@ -277,9 +320,10 @@ input, select, button {
   position: static;
   z-index: 2;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 14px;
-  margin-top: 24px;
+  margin-top: 36px;
 }
 
 .hero-locale-badge.is-ca #hero-locale-badge {
@@ -298,6 +342,12 @@ input, select, button {
 
 .hero-locale-badge img:hover {
   transform: scale(1.04);
+}
+
+@media (min-width: 992px) and (max-width: 1100px) {
+  .hero-locale-badge {
+    max-width: 230px;
+  }
 }
 
 /* ===== FORM CARD ===== */
@@ -1966,6 +2016,11 @@ input, select, button {
   }
 
   .hero:has(.mobile-hero-cta) .hero-subtitle {
+    font-size: 1.125em;
+  }
+
+  .hero:has(.mobile-hero-cta) .hero-list-label--benefits,
+  .hero:has(.mobile-hero-cta) .hero-list--benefits {
     font-size: 1.125em;
   }
 }
