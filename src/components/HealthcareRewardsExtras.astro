@@ -1,0 +1,113 @@
+<section class="feature-row reverse healthcare-rewards-extra">
+  <div class="container">
+    <div class="feature-image">
+      <div
+        class="healthcare-rewards-lottie"
+        data-healthcare-rewards-lottie
+        role="img"
+        aria-label="Animated selection of merchandise rewards"
+      ></div>
+    </div>
+    <div class="feature-text">
+      <h3>Incredible reward selection</h3>
+      <p>Team members can choose from a selection of hundreds of thousands of exciting products, including merchandise, gift cards, travel &amp; experiences, and mobile top-ups. Rewards are sourced locally. Kudos has also partnered with Veritree to plant a tree for every eligible reward redemption.*</p>
+    </div>
+  </div>
+</section>
+
+<section class="feature-row healthcare-rewards-extra">
+  <div class="container">
+    <div class="feature-image">
+      <img
+        src="/images/healthcare-rewards-custom.webp"
+        alt="Examples of custom rewards in Kudos"
+        width="1500"
+        height="975"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="feature-text">
+      <h3>Custom rewards catalogs</h3>
+      <p>Get creative with a custom reward catalog for your team members. Offer anything from a new set of branded scrubs to a prime parking spot. The possibilities are endless.</p>
+    </div>
+  </div>
+</section>
+
+<section class="feature-row reverse healthcare-rewards-extra">
+  <div class="container">
+    <div class="feature-image">
+      <img
+        src="/images/healthcare-rewards-gift-cards.webp"
+        alt="Examples of gift card rewards in Kudos"
+        width="1500"
+        height="975"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="feature-text">
+      <h3>Pay no transaction fees or hidden costs</h3>
+      <p>At Kudos, we keep rewards budgeting simple, because our focus is on building cultures of meaningful recognition. Rewards can play an important role in employees feeling supported and engaged – so we don’t charge extra fees that would only wind up impacting their rewards experience.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .healthcare-rewards-extra .feature-image img {
+    height: auto;
+    aspect-ratio: 1500 / 975;
+  }
+
+  .healthcare-rewards-lottie {
+    width: 100%;
+    aspect-ratio: 558 / 363;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+</style>
+
+<script>
+  const container = document.querySelector<HTMLElement>('[data-healthcare-rewards-lottie]');
+
+  if (container) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let loaded = false;
+
+    const loadAnimation = async () => {
+      if (loaded) return;
+      loaded = true;
+
+      const { default: lottie } = await import('lottie-web/build/player/lottie_light');
+
+      const animation = lottie.loadAnimation({
+        container,
+        renderer: 'svg',
+        loop: true,
+        autoplay: !reducedMotion.matches,
+        path: '/images/healthcare-rewards-merchandise.json',
+      });
+
+      animation.addEventListener('DOMLoaded', () => {
+        if (reducedMotion.matches) animation.goToAndStop(0, true);
+      });
+
+      reducedMotion.addEventListener('change', () => {
+        if (reducedMotion.matches) animation.goToAndStop(0, true);
+        else animation.play();
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          loadAnimation();
+        }
+      }, { rootMargin: '300px' });
+      observer.observe(container);
+    } else {
+      loadAnimation();
+    }
+  }
+</script>
