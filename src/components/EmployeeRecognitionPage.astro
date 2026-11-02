@@ -13,6 +13,7 @@ interface Props {
 }
 
 const { isThankYou = false, isHealthcare = false, mainFormId = '752783ec-f67e-493a-8251-642812d70938', hideHeaderActions = false } = Astro.props;
+const hasHealthcareRewardsExtras = Astro.slots.has('healthcare-rewards-extras');
 const currentYear = new Date().getFullYear();
 const thankYouLogoHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-logo&utm_campaign=employee-recognition&utm_content=header-logo';
 const thankYouCtaHref = 'https://www.kudos.com/?utm_source=ppc-landing-pages&utm_medium=thank-you-page-cta&utm_campaign=employee-recognition&utm_content=hero-cta';
@@ -36,11 +37,13 @@ const legalLinks = {
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-5TVQWJXG');</script>
     <!-- End Google Tag Manager -->
-    <title>{isThankYou ? 'Thank you for your interest in Kudos!' : isHealthcare ? 'Employee Recognition for Hospitals & Health Systems | Kudos' : 'The Next Generation of Employee Recognition'}</title>
+    <title>{isThankYou ? 'Thank you for your interest in Kudos!' : hasHealthcareRewardsExtras ? 'Healthcare Employee Rewards & Recognition Software | Kudos' : isHealthcare ? 'Employee Recognition for Hospitals & Health Systems | Kudos' : 'The Next Generation of Employee Recognition'}</title>
     <meta
       name="description"
       content={isThankYou
         ? 'Thank you for your interest in Kudos. We look forward to connecting with you.'
+        : hasHealthcareRewardsExtras
+          ? 'Kudos helps hospitals and health systems run employee rewards and recognition programs with locally sourced choices, custom catalogs and budget controls.'
         : isHealthcare
           ? 'Recognize nurses, clinicians and support staff on every shift. Kudos helps hospitals and health systems reduce turnover with recognition and rewards tied to your values.'
         : 'Kudos® is the recognition and rewards platform designed to fit your unique workplace culture.'}
@@ -100,15 +103,17 @@ const legalLinks = {
           </>
         ) : isHealthcare ? (
           <>
-            <p class="hero-label">Employee Recognition for Hospitals &amp; Health Systems</p>
-            <h1 class="hero-title">Recognition That Reaches Every Shift</h1>
-            <p class="hero-subtitle">Kudos® helps hospitals and health systems recognize nurses, clinicians and support staff where they work, so great care gets noticed and your people stay.</p>
+            <p class="hero-label">{hasHealthcareRewardsExtras ? 'Employee Rewards for Hospitals & Health Systems' : 'Employee Recognition for Hospitals & Health Systems'}</p>
+            <h1 class="hero-title">{hasHealthcareRewardsExtras ? 'Healthcare employee rewards that reach every shift' : 'Recognition That Reaches Every Shift'}</h1>
+            <p class="hero-subtitle">{hasHealthcareRewardsExtras
+              ? 'Kudos is the rewards and recognition platform for hospitals and health systems. Give nurses, clinicians and support staff locally sourced reward choices while managing budgets by unit, location or program.'
+              : 'Kudos® helps hospitals and health systems recognize nurses, clinicians and support staff where they work, so great care gets noticed and your people stay.'}</p>
             <MobileFormCta />
             <p class="hero-list-label hero-list-label--benefits">With Kudos you'll:</p>
             <ul class="hero-list hero-list--benefits">
               <li>Recognize nurses and frontline staff on every shift and unit</li>
-              <li>Reduce turnover with recognition tied to your values</li>
-              <li>Run awards, milestones and rewards from one platform</li>
+              <li>{hasHealthcareRewardsExtras ? 'Reduce turnover with rewards and recognition' : 'Reduce turnover with recognition tied to your values'}</li>
+              <li>{hasHealthcareRewardsExtras ? 'Run rewards, years-of-service, and awards from one platform' : 'Run awards, milestones and rewards from one platform'}</li>
               <li>See recognition activity by unit, department and location</li>
             </ul>
           </>
@@ -139,7 +144,7 @@ const legalLinks = {
 
       {!isThankYou && (
         <div class="form-card" id="top-form">
-          <h2 class="form-card-title">Schedule a 30-minute call</h2>
+          <h2 class="form-card-title">{hasHealthcareRewardsExtras ? 'Explore Kudos Rewards in a 30-minute call' : 'Schedule a 30-minute call'}</h2>
           <div class="hubspot-form hubspot-form-hero">
             <div class="hs-form-frame" data-form-role="main" data-region="na1" data-form-id={mainFormId} data-portal-id="21201461"></div>
           </div>
@@ -238,8 +243,10 @@ const legalLinks = {
   <!-- Features Intro -->
   <section class="features-intro">
     <div class="container">
-      <h2>Real Recognition, Real Results</h2>
-      <p>Kudos helps organizations worldwide build stronger cultures through the power of employee recognition.</p>
+      <h2>{hasHealthcareRewardsExtras ? 'A healthcare rewards program built around your people' : 'Real Recognition, Real Results'}</h2>
+      <p>{hasHealthcareRewardsExtras
+        ? 'Kudos helps healthcare providers build stronger cultures through the power of employee rewards and recognition.'
+        : 'Kudos helps organizations worldwide build stronger cultures through the power of employee recognition.'}</p>
     </div>
   </section>
 
@@ -260,7 +267,7 @@ const legalLinks = {
           <p class="metric-label">Improvement in engagement scores</p>
         </article>
       </div>
-      {isHealthcare && <p class="metrics-caption">Results across Kudos customers</p>}
+      {isHealthcare && <p class="metrics-caption">{hasHealthcareRewardsExtras ? 'Results across all Kudos customers; not specific to healthcare rewards.' : 'Results across Kudos customers'}</p>}
     </div>
   </section>
 
@@ -270,12 +277,15 @@ const legalLinks = {
         <div class="container">
           <div class="feature-image"><img src="/images/feature-recognition.webp" alt="Kudos recognition card showing a Great Job message" loading="lazy" /></div>
           <div class="feature-text">
-            <h3>Recognition built for care teams</h3>
-            <p>Peer-to-peer, manager-to-employee, nomination-based, eCards and milestone recognition in one platform. Kudos provides everything you need to run an effective recognition program in your healthcare facilities.</p>
+            <h3>{hasHealthcareRewardsExtras ? 'Rewards and recognition built for care teams' : 'Recognition built for care teams'}</h3>
+            <p>{hasHealthcareRewardsExtras
+              ? 'Peer-to-peer, manager-to-employee, nomination-based, eCards and milestone recognition, points, rewards, and budget control. Kudos provides everything you need to run an effective rewards and recognition program in your healthcare facility.'
+              : 'Peer-to-peer, manager-to-employee, nomination-based, eCards and milestone recognition in one platform. Kudos provides everything you need to run an effective recognition program in your healthcare facilities.'}</p>
           </div>
         </div>
       </section>
-      <section class="feature-row reverse">
+      <slot name="healthcare-rewards-extras" />
+      <section class:list={['feature-row', { reverse: !hasHealthcareRewardsExtras }]}>
         <div class="container">
           <div class="feature-image"><img src="/images/rewards-woman.webp" alt="Employee receiving a reward" loading="lazy" /></div>
           <div class="feature-text">
@@ -284,17 +294,19 @@ const legalLinks = {
           </div>
         </div>
       </section>
-      <section class="feature-row">
-        <div class="container">
-          <div class="feature-image">
-            <AnalyticsChart healthcare />
+      {!hasHealthcareRewardsExtras && (
+        <section class="feature-row">
+          <div class="container">
+            <div class="feature-image">
+              <AnalyticsChart healthcare />
+            </div>
+            <div class="feature-text">
+              <h3>Know which units need attention</h3>
+              <p>Participation and values data by unit, department and manager. Spot engagement gaps early, compare locations, and report clear outcomes to leadership.</p>
+            </div>
           </div>
-          <div class="feature-text">
-            <h3>Know which units need attention</h3>
-            <p>Participation and values data by unit, department and manager. Spot engagement gaps early, compare locations, and report clear outcomes to leadership.</p>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
       <IntegrationsSection />
       <section class="feature-row">
         <div class="container">
@@ -480,6 +492,7 @@ const legalLinks = {
         <img src="/images/kudos-logo.svg" alt="Kudos">
       </div>
       <p class="footer-copyright">&copy; <span>{currentYear}</span> Copyright Kudos®, Inc.<br>All Rights Reserved.</p>
+      <slot name="page-footnote" />
     </div>
   </footer>
 

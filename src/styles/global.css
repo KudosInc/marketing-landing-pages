@@ -1353,6 +1353,15 @@ input, select, button {
   margin-bottom: 0;
 }
 
+.rewards-footnote {
+  max-width: 760px;
+  margin: 20px auto 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.85em;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .footer-bottom {
   background-color: var(--dark-slate);
   display: flex;
