@@ -602,6 +602,7 @@ input, select, button {
   font-weight: 700;
   line-height: 1;
   margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-label {
