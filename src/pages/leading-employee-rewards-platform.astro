@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import MobileFormCta from '../components/MobileFormCta.astro';
 import HeroG2Badges from '../components/HeroG2Badges.astro';
+import { exitIntentModalsEnabled } from '../config/landing-pages';
 
 const currentYear = new Date().getFullYear();
 const legalLinks = {
@@ -304,6 +305,7 @@ const legalLinks = {
   </section>
 
   <!-- Exit Intent Modal -->
+  {exitIntentModalsEnabled && (
   <div class="exit-intent-modal" id="exit-intent-modal" hidden aria-hidden="true">
     <div
       class="exit-intent-dialog"
@@ -350,6 +352,7 @@ const legalLinks = {
       </div>
     </div>
   </div>
+  )}
 
   <!-- Footer -->
   <footer class="footer">
