@@ -11,7 +11,6 @@
   --slate: #1d252d;
   --grey-background: #f7f9fb;
   --dark-slate: #1b2129;
-  --light-text: #626262;
   --iris: #b6b7f0;
   --stone: #a1a1ba;
 }
@@ -183,7 +182,7 @@ input, select, button {
   font-size: 3.2em;
   font-weight: 700;
   line-height: 1.1;
-  color: #fff;
+  color: #a6a5fc;
   margin-bottom: 0.5em;
 }
 
@@ -287,10 +286,8 @@ input, select, button {
   width: 20px;
   height: 20px;
   margin-top: 5px;
-  border: 1.5px solid var(--coral);
-  border-radius: 50%;
-  color: var(--coral);
-  font-size: 13px;
+  color: #fff;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1;
 }
@@ -643,7 +640,7 @@ input, select, button {
 
 .features-intro p {
   text-align: center;
-  color: #5f6b7a;
+  color: var(--slate);
   margin-left: auto;
   margin-right: auto;
   max-width: 900px;
@@ -731,7 +728,7 @@ input, select, button {
 .feature-text p:not(.section-label) {
   font-size: 1.25em;
   line-height: 1.7;
-  color: var(--grey);
+  color: var(--slate);
 }
 
 .section-label {
@@ -1040,7 +1037,7 @@ input, select, button {
 }
 
 .integrations-content > p:not(.section-label) {
-  color: var(--light-text);
+  color: var(--slate);
   font-size: 1.05em;
   margin-bottom: 14px;
 }
