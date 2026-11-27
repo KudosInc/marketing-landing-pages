@@ -4,6 +4,7 @@ import MobileFormCta from './MobileFormCta.astro';
 import AnalyticsChart from './AnalyticsChart.astro';
 import IntegrationsSection from './IntegrationsSection.astro';
 import HeroG2Badges from './HeroG2Badges.astro';
+import { exitIntentModalsEnabled } from '../config/landing-pages';
 
 interface Props {
   isThankYou?: boolean;
@@ -436,7 +437,7 @@ const legalLinks = {
   </section>
 
   <!-- Exit Intent Modal -->
-  {!isThankYou && (
+  {exitIntentModalsEnabled && !isThankYou && (
   <div class="exit-intent-modal" id="exit-intent-modal" hidden aria-hidden="true">
     <div
       class="exit-intent-dialog"
